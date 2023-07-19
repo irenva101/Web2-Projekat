@@ -100,11 +100,11 @@ namespace WEB2_Projekat.Migrations
                     b.Property<string>("SlikaKorisnika")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TipKorisnika")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Verifikovan")
                         .HasColumnType("bit");
-
-                    b.Property<int>("tipKorisnika")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

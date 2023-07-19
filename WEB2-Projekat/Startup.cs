@@ -1,3 +1,7 @@
+using Business.Interfaces;
+using Business.Services;
+using Data.Interfaces;
+using Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -30,6 +34,12 @@ namespace WEB2_Projekat
         {
             services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Web2DB")));
+
+            //services
+            services.AddScoped<IArtikalService, ArtikalService>();
+
+            //repositories
+            services.AddScoped<IArtikalRepository, ArtikalRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

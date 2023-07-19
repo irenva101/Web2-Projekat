@@ -16,7 +16,7 @@ namespace WEB2_Projekat.Models
         public DateTime DatumRodjenja { get; set; }
         public string Adresa { get; set; }
         
-        public TipKorisnika tipKorisnika { get; set; }
+        public TipKorisnika TipKorisnika { get; set; }
 
         public string SlikaKorisnika { get; set; }
         public bool Verifikovan { get; set; }
