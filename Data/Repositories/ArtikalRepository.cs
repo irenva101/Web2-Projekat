@@ -38,11 +38,13 @@ namespace Data.Repositories
 
         public async Task<bool> Delete(int idArtikla)
         {
-            var artikal=_dbContext.Artikli.FindAsync(idArtikla);
+            var artikal = await _dbContext.Artikli.FindAsync(idArtikla);
             if (artikal == null)
             {
                 return false;
             }
+
+            _dbContext.Artikli.Remove(artikal);
             await _dbContext.SaveChangesAsync();
             return true;
         }
