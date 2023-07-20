@@ -1,10 +1,17 @@
 ﻿using Shared.RequestModels;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using WEB2_Projekat.Models;
 
 namespace Data.Interfaces
 {
     public interface IArtikalRepository
     {
-        Task<int> Create(ArtikalRequestModel model);
+        Task<Artikal> Create(ArtikalRequestModel model);
+        Task<ICollection<Artikal>> GetAllArtikals();
+        Task<ICollection<Artikal>> GetAllArtikalsOfProdavac(int idProdavca);
+        Task<bool> Delete(int idArtikla);
+        Task<bool> Patch(int idArtikla, ArtikalRequestModel model);
     }
 }

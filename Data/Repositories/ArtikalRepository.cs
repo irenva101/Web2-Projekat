@@ -19,7 +19,7 @@ namespace Data.Repositories
             _dbContext = dBContext;
         }
 
-        public async Task<int> Create(ArtikalRequestModel model)
+        public async Task<Artikal> Create(ArtikalRequestModel model)
         {
             Artikal dbEntity = new Artikal();
             dbEntity.ProdavacID = 1; //treba promeniti u model.ProdavacId
@@ -33,7 +33,49 @@ namespace Data.Repositories
 
             await _dbContext.SaveChangesAsync();
 
-            return result.Entity.Id;
+            return result.Entity;
+        }
+
+        public async Task<bool> Delete(int idArtikla)
+        {
+            var artikal=_dbContext.Artikli.FindAsync(idArtikla);
+            if (artikal == null)
+            {
+                return false;
+            }
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<ICollection<Artikal>> GetAllArtikals()
+        {
+            await _dbContext.SaveChangesAsync();
+            return _dbContext.Artikli.OrderBy(a=>a.Id).ToList();
+        }
+
+        public async Task<ICollection<Artikal>> GetAllArtikalsOfProdavac(int idProdavca)
+        {
+            await _dbContext.SaveChangesAsync();
+            return (ICollection<Artikal>)_dbContext.Artikli.Where(a=> a.ProdavacID == idProdavca).ToList();
+        }
+
+        public async Task<bool> Patch(int idArtikla, ArtikalRequestModel model)
+        {
+            var artikal = await _dbContext.Artikli.FindAsync(idArtikla);
+            if (artikal==null)
+            {
+                return false;
+            }
+
+            //ne moze da se menja idProdavca
+            artikal.Opis= model.Opis;
+            artikal.Naziv= model.Naziv;
+            artikal.Cena= model.Cena;
+            artikal.Kolicina= model.Kolicina;
+            artikal.SlikaArtikla = model.Slika;
+
+            await _dbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

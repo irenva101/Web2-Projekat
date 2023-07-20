@@ -1,14 +1,14 @@
-﻿using Shared.RequestModels;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WEB2_Projekat.Models
+namespace Shared.RequestModels
 {
-    
-    public class Korisnik
+    public enum TipKorisnika { Kupac, Prodavac };
+    public class KorisnikRequestModel
     {
-        [Key]
-        public int Id { get; set; }
         public string KorisnickoIme { get; set; }
         public string Email { get; set; }
         public string Lozinka { get; set; }
@@ -16,12 +16,9 @@ namespace WEB2_Projekat.Models
         public string Prezime { get; set; }
         public DateTime DatumRodjenja { get; set; }
         public string Adresa { get; set; }
-        
-        public TipKorisnika TipKorisnika { get; set; }
-
+        public  TipKorisnika TipKorisnika { get; set; }
         public string SlikaKorisnika { get; set; }
         public bool Verifikovan { get; set; }
-        public double Postarina { get; set; } //prodavac, svaki ima svoju postarinu
-
+        public double Postarina { get; set; }
     }
 }

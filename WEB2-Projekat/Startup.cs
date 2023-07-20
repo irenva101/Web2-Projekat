@@ -37,9 +37,11 @@ namespace WEB2_Projekat
 
             //services
             services.AddScoped<IArtikalService, ArtikalService>();
+            services.AddScoped<IKorisnikService, KorisnikService>();
 
             //repositories
             services.AddScoped<IArtikalRepository, ArtikalRepository>();
+            services.AddScoped<IKorisnikRepository, KorisnikRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -59,6 +61,7 @@ namespace WEB2_Projekat
             }
 
             app.UseHttpsRedirection();
+            
 
             app.UseRouting();
 
