@@ -1,4 +1,5 @@
 ﻿using Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Shared.RequestModels;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Data.Repositories
         {
             _dbContext = dBContext;
         }
-        public async Task<Porudzbina> Create(PorudzbinaRequestModel model)
+        public async Task<Porudzbina> CreatePorudzbina(PorudzbinaRequestModel model)
         {
             Porudzbina porudzbina = new Porudzbina();
             porudzbina.AdresaDostave=model.AdresaDostave;
@@ -28,13 +29,14 @@ namespace Data.Repositories
             return result.Entity;
         }
 
-        public async Task<bool> Delete(int idPorudzbine)
+        public async Task<bool> DeletePorudzbina(int idPorudzbine)
         {
-            var porudzbina = await _dbContext.Porudzbine.FindAsync(idPorudzbine);
+            var porudzbina = await _dbContext.Porudzbine.SingleOrDefaultAsync(p => p.Id == idPorudzbine); //nije dobro jer vraca true ili false
             if (porudzbina == null)
             {
                 return false;
             }
+
 
             _dbContext.Porudzbine.Remove(porudzbina);
             await _dbContext.SaveChangesAsync();
@@ -55,7 +57,7 @@ namespace Data.Repositories
 
         public async Task<Porudzbina> GetPorudzbina(int idPorudzbinaId)
         {
-            var result = await _dbContext.Porudzbine.FindAsync(idPorudzbinaId);
+            var result = await _dbContext.Porudzbine.SingleOrDefaultAsync(p=> p.Id==idPorudzbinaId);
             if(result == null)
             {
                 return null;
@@ -63,16 +65,16 @@ namespace Data.Repositories
             return result;
         }
 
-        public async Task<bool> Patch(int idPorudzbine, PorudzbinaRequestModel model)
+        public async Task<bool> PatchPorudzbina(int idPorudzbine, PorudzbinaRequestModel model)
         {
-            var porudzbina = await _dbContext.Porudzbine.FindAsync(idPorudzbine);
+            var porudzbina = await _dbContext.Porudzbine.SingleOrDefaultAsync(p=> p.Id==idPorudzbine);
             if (porudzbina == null)
             {
                 return false;
             }
 
             porudzbina.AdresaDostave= model.AdresaDostave;
-            porudzbina.Komentar=model.Komentar;
+            porudzbina.Komentar=model.Komentar; 
 
             await _dbContext.SaveChangesAsync();
             return true;

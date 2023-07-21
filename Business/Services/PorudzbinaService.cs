@@ -20,12 +20,12 @@ namespace Business.Services
         }
         public async Task<Porudzbina> Create(PorudzbinaRequestModel model)
         {
-            return await _porudzbinaRepository.Create(model);
+            return await _porudzbinaRepository.CreatePorudzbina(model);
         }
 
         public async Task<bool> Delete(int idPorudzbine)
         {
-            return await _porudzbinaRepository.Delete(idPorudzbine);
+            return await _porudzbinaRepository.DeletePorudzbina(idPorudzbine);
         }
 
         public async Task<ICollection<Porudzbina>> GetAllPorudzbine(int idKorisnika)
@@ -45,7 +45,7 @@ namespace Business.Services
 
         public async Task<bool> Patch(int idPorudzbine, PorudzbinaRequestModel model)
         {
-            return await _porudzbinaRepository.Patch(idPorudzbine, model);
+            return await _porudzbinaRepository.PatchPorudzbina(idPorudzbine, model);
         }
     }
 }

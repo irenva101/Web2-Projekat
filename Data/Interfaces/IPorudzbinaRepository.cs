@@ -10,14 +10,14 @@ namespace Data.Interfaces
 {
     public interface IPorudzbinaRepository
     {
-        Task<Porudzbina> Create(PorudzbinaRequestModel model);
+        Task<Porudzbina> CreatePorudzbina(PorudzbinaRequestModel model);
         Task<Porudzbina> GetPorudzbina(int idPorudzbinaId);
         //sve porudzbine korisnika
         Task<ICollection<Porudzbina>> GetAllPorudzbine(int idKorisnika);
         //sve porudzbine generalno
         Task<ICollection<Porudzbina>> GetAllPorudzbine();
-        Task<bool> Patch(int idPorudzbine, PorudzbinaRequestModel model);
-        Task<bool> Delete(int idPorudzbine);
+        Task<bool> PatchPorudzbina(int idPorudzbine, PorudzbinaRequestModel model);
+        Task<bool> DeletePorudzbina(int idPorudzbine);
 
     }
 }
