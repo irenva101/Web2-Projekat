@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace WEB2_Projekat.Migrations
+namespace Data.Migrations
 {
-    public partial class InicijalnoKreiranjeTabela : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,7 +20,7 @@ namespace WEB2_Projekat.Migrations
                     Prezime = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DatumRodjenja = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Adresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    tipKorisnika = table.Column<int>(type: "int", nullable: false),
+                    TipKorisnika = table.Column<int>(type: "int", nullable: false),
                     SlikaKorisnika = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Verifikovan = table.Column<bool>(type: "bit", nullable: false),
                     Postarina = table.Column<double>(type: "float", nullable: false)
@@ -34,7 +34,8 @@ namespace WEB2_Projekat.Migrations
                 name: "Porudzbine",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     KorisnikId = table.Column<int>(type: "int", nullable: false),
                     AdresaDostave = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Komentar = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -100,7 +101,7 @@ namespace WEB2_Projekat.Migrations
                 columns: table => new
                 {
                     ArtikliId = table.Column<int>(type: "int", nullable: false),
-                    PorudzbineId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    PorudzbineId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

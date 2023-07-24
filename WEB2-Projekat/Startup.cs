@@ -4,6 +4,7 @@ using Data.Interfaces;
 using Data.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,10 +39,14 @@ namespace WEB2_Projekat
             //services
             services.AddScoped<IArtikalService, ArtikalService>();
             services.AddScoped<IKorisnikService, KorisnikService>();
+            services.AddScoped<IPorudzbinaService, PorudzbinaService>();
+            services.AddScoped<IProdavacService, ProdavacService>();
 
             //repositories
             services.AddScoped<IArtikalRepository, ArtikalRepository>();
             services.AddScoped<IKorisnikRepository, KorisnikRepository>();
+            services.AddScoped<IPorudzbinaRepository, PorudzbinaRepository>();
+            services.AddScoped<IProdavacRepository, ProdavacRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

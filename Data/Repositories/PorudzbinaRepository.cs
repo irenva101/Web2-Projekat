@@ -21,10 +21,11 @@ namespace Data.Repositories
         public async Task<Porudzbina> CreatePorudzbina(PorudzbinaRequestModel model)
         {
             Porudzbina porudzbina = new Porudzbina();
+            porudzbina.KorisnikId = model.KorisnikId;
             porudzbina.AdresaDostave=model.AdresaDostave;
             porudzbina.Komentar=model.Komentar;
 
-            var result =await _dbContext.Porudzbine.AddAsync(porudzbina);
+            var result = await _dbContext.Porudzbine.AddAsync(porudzbina);
             await _dbContext.SaveChangesAsync();
             return result.Entity;
         }

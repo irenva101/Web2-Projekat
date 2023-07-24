@@ -7,6 +7,8 @@ namespace WEB2_Projekat.DBAccess
 {
     public class DBContext : DbContext
     {
+        public DBContext() { }
+
         public DBContext(DbContextOptions<DBContext> options) : base(options)
         {
         }
@@ -18,6 +20,10 @@ namespace WEB2_Projekat.DBAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Porudzbina>()
+            .Property(p => p.Id)
+            .ValueGeneratedOnAdd(); // Postavljanje automatskog generisanja
+
             modelBuilder.Entity<Artikal>()
             .HasOne(a => a.Prodavac)//artikal pripada iskljucivo jednom prodavcu
             .WithMany(p => p.Artikli) //prodavac ima vise artikala

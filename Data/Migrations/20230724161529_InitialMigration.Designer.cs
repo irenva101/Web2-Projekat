@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WEB2_Projekat.DBAccess;
 
-namespace WEB2_Projekat.Migrations
+namespace Data.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20230719154604_InicijalnoKreiranjeTabela")]
-    partial class InicijalnoKreiranjeTabela
+    [Migration("20230724161529_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,8 +26,8 @@ namespace WEB2_Projekat.Migrations
                     b.Property<int>("ArtikliId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PorudzbineId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PorudzbineId")
+                        .HasColumnType("int");
 
                     b.HasKey("ArtikliId", "PorudzbineId");
 
@@ -102,11 +102,11 @@ namespace WEB2_Projekat.Migrations
                     b.Property<string>("SlikaKorisnika")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TipKorisnika")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Verifikovan")
                         .HasColumnType("bit");
-
-                    b.Property<int>("tipKorisnika")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -115,8 +115,10 @@ namespace WEB2_Projekat.Migrations
 
             modelBuilder.Entity("WEB2_Projekat.Models.Porudzbina", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AdresaDostave")
                         .HasColumnType("nvarchar(max)");
