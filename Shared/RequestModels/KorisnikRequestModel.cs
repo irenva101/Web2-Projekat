@@ -32,16 +32,11 @@ namespace Shared.RequestModels
         public string Lozinka { get; set; }
         public string Ime { get; set; }
         public string Prezime { get; set; }
-
-        [Column(TypeName="date")]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DatumRodjenja { get; set; }
         public string Adresa { get; set; }
         public  TipKorisnika TipKorisnika { get; set; }
         public string SlikaKorisnika { get; set; }
         public bool Verifikovan { get; set; }
         public double Postarina { get; set; }
-        [NotMapped]
-        public string FormattedDatumRodjenja => DatumRodjenja.ToString("dd-MM-yyyy");
     }
 }
