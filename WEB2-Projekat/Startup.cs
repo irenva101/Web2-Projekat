@@ -33,6 +33,16 @@ namespace WEB2_Projekat
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
+
             services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Web2DB")));
 
@@ -53,6 +63,7 @@ namespace WEB2_Projekat
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WEB2_Projekat", Version = "v1" });
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,7 +77,8 @@ namespace WEB2_Projekat
             }
 
             app.UseHttpsRedirection();
-            
+
+            app.UseCors();
 
             app.UseRouting();
 

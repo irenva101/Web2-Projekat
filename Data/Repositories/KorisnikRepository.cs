@@ -1,4 +1,5 @@
 ﻿using Data.Interfaces;
+using Shared.ModelsDTO;
 using Shared.RequestModels;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WEB2_Projekat.DBAccess;
 using WEB2_Projekat.Models;
+using System.Linq;
 
 namespace Data.Repositories
 {
@@ -30,7 +32,7 @@ namespace Data.Repositories
             dbEntity.Prezime = model.Prezime;
             dbEntity.DatumRodjenja = model.DatumRodjenja;
             dbEntity.Adresa = model.Adresa;
-            dbEntity.TipKorisnika = 0;
+            dbEntity.TipKorisnika = model.TipKorisnika;
             dbEntity.SlikaKorisnika = model.SlikaKorisnika;
             dbEntity.Verifikovan = model.Verifikovan;
             dbEntity.Postarina = model.Postarina;
@@ -61,10 +63,29 @@ namespace Data.Repositories
             return _dbContext.Korisnici.OrderBy(k => k.Id).ToList();
         }
 
-        public async Task<Korisnik> GetKorisnik(int idKorisnika)
+        public async Task<KorisnikRequestModel> GetKorisnik(int idKorisnika)
         {
             await _dbContext.SaveChangesAsync();
-            return _dbContext.Korisnici.SingleOrDefault(k => k.Id == idKorisnika);
+            var k= _dbContext.Korisnici.SingleOrDefault(k => k.Id == idKorisnika);
+            KorisnikRequestModel KRM = new KorisnikRequestModel(k.KorisnickoIme, k.Email, k.Lozinka, k.Ime, k.Prezime, k.DatumRodjenja,
+                k.Adresa, k.TipKorisnika, k.SlikaKorisnika, k.Verifikovan, k.Postarina);
+            return KRM;
+        }
+
+        public async Task<bool> Logovanje(LogovanjeDTO dto)
+        {
+            var emailDTO = dto.Email;
+            var lozinkaDTO = dto.Lozinka;
+            var korisnik = _dbContext.Korisnici
+                .Where(korisnik => korisnik.Email == emailDTO).FirstOrDefault();
+            if (korisnik != null)
+            {
+                if(korisnik.Lozinka==lozinkaDTO) { return true; }
+            }
+
+            await _dbContext.SaveChangesAsync();
+            return false;
+            
         }
 
         public async Task<bool> Patch(int idKorisnika, KorisnikRequestModel model)

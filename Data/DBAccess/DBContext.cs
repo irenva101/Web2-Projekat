@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Shared.RequestModels;
+using System;
 using System.Collections.Generic;
 using WEB2_Projekat.Models;
 
@@ -20,6 +23,17 @@ namespace WEB2_Projekat.DBAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
+
+            // Configure the custom value converter for DateTime
+            var converter = new ValueConverter<DateTime, string>(
+                v => v.ToString("dd-MM-yyyy"), // Convert DateTime to string
+                v => DateTime.ParseExact(v, "dd-MM-yyyy", null) // Convert string back to DateTime
+            );
+
+            modelBuilder.Entity<KorisnikRequestModel>()
+                .Ignore(e => e.FormattedDatumRodjenja);
+
             modelBuilder.Entity<Porudzbina>()
             .Property(p => p.Id)
             .ValueGeneratedOnAdd(); // Postavljanje automatskog generisanja

@@ -31,7 +31,7 @@ namespace WEB2_Projekat.Controllers
         //[HttpPost]
         //public async Task<Prodavac> Post(PorudzbinaRequestModel model)
         //{
-        //    return await _porudzbinaService.Create(model);
+        //    return await _prodavacService.Create(model);
         //}
         [HttpGet("allArtikalsOfProdavac")]
         public async Task<ICollection<Prodavac>> GetAllArtikalsOfProdavac(int idProdavca)

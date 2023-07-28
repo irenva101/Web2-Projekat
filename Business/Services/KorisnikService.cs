@@ -1,6 +1,7 @@
 ﻿using Business.Interfaces;
 using Data.Interfaces;
 using Data.Repositories;
+using Shared.ModelsDTO;
 using Shared.RequestModels;
 using System;
 using System.Collections.Generic;
@@ -34,9 +35,14 @@ namespace Business.Services
             return await _korisnikRepository.GetAllKorisnike();
         }
 
-        public async Task<Korisnik> GetKorisnik(int idKorisnika)
+        public async Task<KorisnikRequestModel> GetKorisnik(int idKorisnika)
         {
             return await _korisnikRepository.GetKorisnik(idKorisnika);
+        }
+
+        public async Task<bool> Logovanje(LogovanjeDTO dto)
+        {
+            return await _korisnikRepository.Logovanje(dto);
         }
 
         public async Task<bool> Patch(int idKorisnika, KorisnikRequestModel model)

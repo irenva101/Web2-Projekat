@@ -1,13 +1,8 @@
 ﻿using Business.Interfaces;
-using Business.Services;
-using Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using Shared.ModelsDTO;
 using Shared.RequestModels;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using WEB2_Projekat.Models;
 
@@ -39,10 +34,16 @@ namespace WEB2_Projekat.Controllers
         }
 
         [HttpGet]
-        public async Task<Korisnik> Get(int idKorisnika)
+        public async Task<KorisnikRequestModel> Get(int idKorisnika)
         {
             var korisnik = _korisnikService.GetKorisnik(idKorisnika);
             return await korisnik;
+        }
+
+        [HttpPost("logovanje")]
+        public async Task<bool> Logovanje(LogovanjeDTO dto)
+        {
+            return await _korisnikService.Logovanje(dto);
         }
 
         [HttpDelete]
@@ -50,8 +51,8 @@ namespace WEB2_Projekat.Controllers
         {
             return await _korisnikService.Delete(idKorisnika);
         }
-        [HttpPatch]
-        public async Task<bool> Patch(int idKorisnika, KorisnikRequestModel model)
+        [HttpPut]
+        public async Task<bool> Put(int idKorisnika, KorisnikRequestModel model)
         {
             return await _korisnikService.Patch(idKorisnika,model);
         }
