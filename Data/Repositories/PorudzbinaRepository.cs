@@ -24,6 +24,7 @@ namespace Data.Repositories
             porudzbina.KorisnikId = model.KorisnikId;
             porudzbina.AdresaDostave=model.AdresaDostave;
             porudzbina.Komentar=model.Komentar;
+            porudzbina.VremeIsporuke = model.VremeIsporuke;
 
             var result = await _dbContext.Porudzbine.AddAsync(porudzbina);
             await _dbContext.SaveChangesAsync();
@@ -44,10 +45,29 @@ namespace Data.Repositories
             return true;
         }
 
-        public async Task<ICollection<Porudzbina>> GetAllPorudzbine(int idKorisnika)
+        public async Task<ICollection<PorudzbinaRequestModel>> GetAllPorudzbine(int idKorisnika)
         {
             await _dbContext.SaveChangesAsync();
-            return (ICollection<Porudzbina>)_dbContext.Porudzbine.Where(p => p.KorisnikId== idKorisnika).ToList();
+            //return (ICollection<PorudzbinaRequestModel>)_dbContext.Porudzbine.Where(p => p.KorisnikId== idKorisnika).ToList();
+            var porudzbine = _dbContext.Porudzbine
+                .Where(p => p.KorisnikId == idKorisnika)
+                .Select(p => new PorudzbinaRequestModel
+                {
+                    KorisnikId = p.KorisnikId,
+                    AdresaDostave = p.AdresaDostave,
+                    Komentar = p.Komentar,
+                    VremeIsporuke = p.VremeIsporuke,
+                    Artikli = p.Artikli.Select(a=> new ArtikalRequestModel
+                    {
+                        ProdavacId = a.ProdavacID,
+                        Naziv = a.Naziv,
+                        Cena = a.Cena,
+                        Kolicina = a.Kolicina,
+                        Opis = a.Opis,
+                        Slika = a.SlikaArtikla
+                    }).ToList()
+                }).ToList();
+            return porudzbine;
         }
 
         public async Task<ICollection<Porudzbina>> GetAllPorudzbine()

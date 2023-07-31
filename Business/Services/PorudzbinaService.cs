@@ -28,7 +28,7 @@ namespace Business.Services
             return await _porudzbinaRepository.DeletePorudzbina(idPorudzbine);
         }
 
-        public async Task<ICollection<Porudzbina>> GetAllPorudzbine(int idKorisnika)
+        public async Task<ICollection<PorudzbinaRequestModel>> GetAllPorudzbine(int idKorisnika)
         {
             return await _porudzbinaRepository.GetAllPorudzbine(idKorisnika);
         }

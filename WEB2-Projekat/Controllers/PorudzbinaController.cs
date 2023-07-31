@@ -35,7 +35,7 @@ namespace WEB2_Projekat.Controllers
             return await _porudzbinaService.Create(model);
         }
         [HttpGet("allPorudzbineKorisnika")]
-        public async Task<ICollection<Porudzbina>> GetPorudzbinaKorisnika(int idKorisnika)
+        public async Task<ICollection<PorudzbinaRequestModel>> GetPorudzbinaKorisnika(int idKorisnika)
         {
             return await _porudzbinaService.GetAllPorudzbine(idKorisnika);
         }

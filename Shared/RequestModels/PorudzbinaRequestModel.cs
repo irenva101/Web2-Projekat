@@ -12,6 +12,10 @@ namespace Shared.RequestModels
         public string AdresaDostave { get; set; }
         public string Komentar { get; set; }
 
+        public ICollection<ArtikalRequestModel> Artikli { get; set; }
+
+        public DateTime VremeIsporuke { get; set; }
+
 
     }
 }

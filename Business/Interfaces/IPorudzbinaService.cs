@@ -13,7 +13,7 @@ namespace Business.Interfaces
         Task<Porudzbina> Create(PorudzbinaRequestModel model);
         Task<Porudzbina> GetPorudzbina(int idPorudzbinaId);
         //sve porudzbine korisnika
-        Task<ICollection<Porudzbina>> GetAllPorudzbine(int idKorisnika);
+        Task<ICollection<PorudzbinaRequestModel>> GetAllPorudzbine(int idKorisnika);
         //sve porudzbine generalno
         Task<ICollection<Porudzbina>> GetAllPorudzbine();
         Task<bool> Patch(int idPorudzbine, PorudzbinaRequestModel model);

@@ -13,7 +13,7 @@ namespace Data.Interfaces
         Task<Porudzbina> CreatePorudzbina(PorudzbinaRequestModel model);
         Task<Porudzbina> GetPorudzbina(int idPorudzbinaId);
         //sve porudzbine korisnika
-        Task<ICollection<Porudzbina>> GetAllPorudzbine(int idKorisnika);
+        Task<ICollection<PorudzbinaRequestModel>> GetAllPorudzbine(int idKorisnika);
         //sve porudzbine generalno
         Task<ICollection<Porudzbina>> GetAllPorudzbine();
         Task<bool> PatchPorudzbina(int idPorudzbine, PorudzbinaRequestModel model);
