@@ -37,7 +37,7 @@ namespace Data.Repositories
 
             foreach (var af in artikliFront)
             {
-                var artikal = final.FirstOrDefault(adb => adb.Naziv == af.Naziv);
+                var artikal = artikliDB.FirstOrDefault(adb => adb.Naziv == af.Naziv);
                 if (artikal != null)
                 {
                     var artikalPorudzbina = new ArtikalPorudzbina
