@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,7 @@ namespace WEB2_Projekat.Models
     public class Porudzbina
     {
         [Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        
         public int Id { get; set; }
 
         // ID korisnika
@@ -22,6 +23,9 @@ namespace WEB2_Projekat.Models
         public string Komentar { get; set; }
 
         public DateTime VremeIsporuke { get; set; }
+        //referenca na artikalPorudzbina tabelu
+        public virtual ICollection<ArtikalPorudzbina> ArtikalPorudzbina { get; set; }
+
 
     }
 

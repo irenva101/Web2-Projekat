@@ -1,4 +1,5 @@
 ﻿using Data.Interfaces;
+using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Shared.RequestModels;
 using System;
@@ -26,8 +27,40 @@ namespace Data.Repositories
             porudzbina.Komentar=model.Komentar;
             porudzbina.VremeIsporuke = model.VremeIsporuke;
 
+            // Add the new Porudzbina to the context
             var result = await _dbContext.Porudzbine.AddAsync(porudzbina);
             await _dbContext.SaveChangesAsync();
+
+            ICollection<Artikal> artikliDB = _dbContext.Artikli.ToList();
+            ICollection<ArtikalRequestModel> artikliFront = model.Artikli;
+            List<Artikal> final = new List<Artikal>();
+
+            foreach (var af in artikliFront)
+            {
+                var artikal = final.FirstOrDefault(adb => adb.Naziv == af.Naziv);
+                if (artikal != null)
+                {
+                    var artikalPorudzbina = new ArtikalPorudzbina
+                    {
+                        ArtikliId = artikal.Id,
+                        PorudzbineId = porudzbina.Id // Use the Id of the newly created Porudzbina
+                    };
+                    try
+                    {
+                        _dbContext.Set<ArtikalPorudzbina>().Add(artikalPorudzbina);
+                        await _dbContext.SaveChangesAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+            }
+
+
+
+
+
             return result.Entity;
         }
 

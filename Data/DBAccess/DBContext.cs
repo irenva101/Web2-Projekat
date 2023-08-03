@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Data.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System.Collections.Generic;
 using WEB2_Projekat.Models;
@@ -18,6 +19,8 @@ namespace WEB2_Projekat.DBAccess
         public DbSet<Porudzbina> Porudzbine { get; set; }
         public DbSet<Prodavac> Prodavci { get; set; }
 
+        public DbSet<ArtikalPorudzbina> ArtikliPorudzbina { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Porudzbina>()
@@ -35,6 +38,7 @@ namespace WEB2_Projekat.DBAccess
                 .WithMany()//korisnik moze da ima vise porudzbina
                 .HasForeignKey(p => p.KorisnikId)//porudzbina ima idkorisnika kao strani kljuc
                 .OnDelete(DeleteBehavior.Restrict);//necemo dozvoliti prisanje korisnka ako postoje porudzbine vezane za njega
+                
         }
 
     }
