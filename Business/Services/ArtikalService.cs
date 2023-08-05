@@ -40,5 +40,7 @@ namespace Business.Services
         {
             return await _artikalRepository.Patch(idArtikla, model);
         }
+
+        
     }
 }

@@ -49,10 +49,11 @@ namespace WEB2_Projekat.Controllers
         {
             return await _porudzbinaService.Delete(idPorudzbine);
         }
-        
 
-
-
-
+        [HttpGet("allPorudzbineProdavca")]
+        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavca(int korisnikId)//porudzbine sa artiklima od odredjenog prodavca
+        {
+            return await _porudzbinaService.GetPorudzbineProdavca(korisnikId);
+        }
     }
 }

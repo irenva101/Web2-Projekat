@@ -5,6 +5,8 @@ using Shared.RequestModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using WEB2_Projekat.DBAccess;
@@ -132,6 +134,78 @@ namespace Data.Repositories
 
             await _dbContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavca(int korisnikId)
+        {
+            var artikliProdavca = new List<Artikal>();
+
+            var korisnik= await _dbContext.Korisnici.SingleOrDefaultAsync(k=>k.Id==korisnikId);
+            var prodavac = await _dbContext.Prodavci.SingleOrDefaultAsync(p => p.KorisnikId == korisnikId);
+            var sviArtikli = await _dbContext.Artikli.ToListAsync();
+
+            foreach(var a in sviArtikli)
+            {
+                if (a.ProdavacID == prodavac.Id)
+                {
+                    artikliProdavca.Add(a);
+                }
+            }
+
+            var svePorudzbine= await _dbContext.Porudzbine.OrderBy(a => a.Id).ToListAsync();
+            var sviArtikalPorudzbine = await _dbContext.ArtikliPorudzbina.ToListAsync();
+
+            var idPorudzbinaZaPrikazati = new HashSet<int>();
+
+            foreach(var ap in sviArtikalPorudzbine)
+            {
+                foreach (var a in artikliProdavca)
+                {
+                    if(ap.ArtikliId == a.Id)
+                    {
+                        idPorudzbinaZaPrikazati.Add(ap.PorudzbineId); //id-jevi porudzbina koje treba da prikazemo
+                    }
+                }
+            }
+
+            var porudzbineZaPrikazati=new List<Porudzbina>();
+
+            foreach(var sp in svePorudzbine)
+            {
+                foreach(var id in idPorudzbinaZaPrikazati)
+                {
+                    if(sp.Id == id)
+                    {
+                        porudzbineZaPrikazati.Add(sp);
+                    }
+                }
+            }
+
+            //var artikli = new List<Artikal>();
+            //var artikal= new Artikal();
+            //var temp = 0;
+            //var artikliZaSlanje=new List<Artikal>();
+
+
+            //foreach (var pzp in porudzbineZaPrikazati)
+            //{
+            //    foreach(var sap in sviArtikalPorudzbine)
+            //    {
+            //        if(pzp.Id==sap.PorudzbineId)
+            //        {
+            //            temp = sap.ArtikliId;
+            //            artikal=sviArtikli.SingleOrDefault(a=>a.Id== temp);
+            //            artikliZaSlanje.Add(artikal);
+            //            pzp.Artikli.Add(artikal);
+
+
+            //        }
+            //    }
+            //}
+            
+
+            
+            return porudzbineZaPrikazati;
         }
     }
 }

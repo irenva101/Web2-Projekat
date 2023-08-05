@@ -40,12 +40,14 @@ namespace WEB2_Projekat.Controllers
         [HttpDelete]
         public async Task<bool> Delete(int idArtikla)
         {
-           return await _artikalService.Delete(idArtikla);   
+            return await _artikalService.Delete(idArtikla);
         }
         [HttpPatch]
         public async Task<bool> Patch(int idArtikla, ArtikalRequestModel model)
         {
             return await _artikalService.Patch(idArtikla, model);
         }
+        
+        
     }
 }

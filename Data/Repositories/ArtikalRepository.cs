@@ -18,6 +18,8 @@ namespace Data.Repositories
         {
             _dbContext = dBContext;
         }
+        //nzm dal mi treba ova metoda uopste
+        
 
         public async Task<Artikal> Create(ArtikalRequestModel model)
         {

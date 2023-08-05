@@ -18,5 +18,6 @@ namespace Business.Interfaces
         Task<ICollection<Porudzbina>> GetAllPorudzbine();
         Task<bool> Patch(int idPorudzbine, PorudzbinaRequestModel model);
         Task<bool> Delete(int idPorudzbine);
+        Task<ICollection<Porudzbina>> GetPorudzbineProdavca(int korisnikId);
     }
 }

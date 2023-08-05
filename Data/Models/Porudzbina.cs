@@ -17,7 +17,12 @@ namespace WEB2_Projekat.Models
         public int KorisnikId { get; set; }
         public virtual Korisnik Korisnik { get; set; }
 
-        public virtual ICollection<Artikal> Artikli { get; set; }
+        private ICollection<Artikal> _artikli;
+        public virtual ICollection<Artikal> Artikli
+        {
+            get => _artikli ?? (_artikli = new List<Artikal>());
+            set => _artikli = value;
+        }
 
         public string AdresaDostave { get; set; }
         public string Komentar { get; set; }
