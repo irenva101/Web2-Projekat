@@ -8,7 +8,7 @@ namespace Shared.ModelsDTO
 {
     public class LogovanjeDTO
     {
-        public string Email { get; set; }
+        public string Username { get; set; }
         public string Lozinka { get; set; }
     }
 }

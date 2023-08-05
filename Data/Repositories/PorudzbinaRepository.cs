@@ -136,7 +136,7 @@ namespace Data.Repositories
             return true;
         }
 
-        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavca(int korisnikId)
+        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavcaStare(int korisnikId)
         {
             var artikliProdavca = new List<Artikal>();
 
@@ -201,11 +201,72 @@ namespace Data.Repositories
 
             //        }
             //    }
-            //}
-            
-
-            
+            //} 
             return porudzbineZaPrikazati;
+        }
+        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavcaNove(int korisnikId)
+        {
+            var artikliProdavca = new List<Artikal>();
+
+            var korisnik = await _dbContext.Korisnici.SingleOrDefaultAsync(k => k.Id == korisnikId);
+            var prodavac = await _dbContext.Prodavci.SingleOrDefaultAsync(p => p.KorisnikId == korisnikId);
+            var sviArtikli = await _dbContext.Artikli.ToListAsync();
+
+            foreach (var a in sviArtikli)
+            {
+                if (a.ProdavacID == prodavac.Id)
+                {
+                    artikliProdavca.Add(a);
+                }
+            }
+
+            var svePorudzbine = await _dbContext.Porudzbine.OrderBy(a => a.Id).ToListAsync();
+            var sviArtikalPorudzbine = await _dbContext.ArtikliPorudzbina.ToListAsync();
+
+            var idPorudzbinaZaPrikazati = new HashSet<int>();
+
+            foreach (var ap in sviArtikalPorudzbine)
+            {
+                foreach (var a in artikliProdavca)
+                {
+                    if (ap.ArtikliId == a.Id)
+                    {
+                        idPorudzbinaZaPrikazati.Add(ap.PorudzbineId); //id-jevi porudzbina koje treba da prikazemo
+                    }
+                }
+            }
+
+            var porudzbineZaPrikazati = new List<Porudzbina>();
+
+            foreach (var sp in svePorudzbine)
+            {
+                foreach (var id in idPorudzbinaZaPrikazati)
+                {
+                    if (sp.Id == id)
+                    {
+                        porudzbineZaPrikazati.Add(sp);
+                    }
+                }
+            }
+
+            List<Porudzbina> final= new List<Porudzbina>();
+
+
+            foreach(var pzp in porudzbineZaPrikazati)
+            {
+                string zadatoVremeString = pzp.VremeIsporuke.ToString();
+                string formatiraniString = DateTime.ParseExact(zadatoVremeString, "dd/MM/yyyy HH:mm:ss", null).ToString("yyyy-MM-dd HH:mm:ss");
+                DateTime zadatoVreme = DateTime.ParseExact(formatiraniString, "yyyy-MM-dd HH:mm:ss", null);
+                DateTime trenutnoVreme = DateTime.Now;
+                TimeSpan protekloVreme=trenutnoVreme- zadatoVreme;
+                if (protekloVreme.TotalHours <= 1)
+                {
+                    final.Add(pzp);
+                }
+            }
+
+
+            return final;
         }
     }
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Shared.RequestModels
 {
-    public enum TipKorisnika { Kupac, Prodavac };
+    public enum TipKorisnika { Kupac, Prodavac, Odbijen };
     public class KorisnikRequestModel
     {
         public KorisnikRequestModel(string korisnickoIme, string email, string lozinka, string ime, string prezime, DateTime datumRodjenja, string adresa, TipKorisnika tipKorisnika, string slikaKorisnika, bool verifikovan, double postarina) {

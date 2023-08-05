@@ -20,6 +20,19 @@ namespace Business.Services
             _korisnikRepository = korisnikRepository;
         }
 
+        public async Task<bool> OdbijVerProdavca(int idKorisnika)
+        {
+            return await _korisnikRepository.OdbijVerProdavca(idKorisnika);
+        }
+        public async Task<bool> VerifikujProdavca(int idKorisnika)
+        {
+            return await _korisnikRepository.VerifikujProdavca(idKorisnika);
+        }
+        public async Task<ICollection<Korisnik>> GetAllKorisnikeProdavceNeverifikovane()
+        {
+            return await _korisnikRepository.GetAllKorisnikeProdavceNeverifikovane();
+        }
+
         public async Task<Korisnik> Create(KorisnikRequestModel model)
         {
             return await _korisnikRepository.Create(model);

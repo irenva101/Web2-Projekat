@@ -18,7 +18,8 @@ namespace Data.Interfaces
         Task<ICollection<Porudzbina>> GetAllPorudzbine();
         Task<bool> PatchPorudzbina(int idPorudzbine, PorudzbinaRequestModel model);
         Task<bool> DeletePorudzbina(int idPorudzbine);
-        Task<ICollection<Porudzbina>> GetPorudzbineProdavca(int korisnikId);
+        Task<ICollection<Porudzbina>> GetPorudzbineProdavcaStare(int korisnikId);
+        Task<ICollection<Porudzbina>> GetPorudzbineProdavcaNove(int korisnikId);
 
     }
 }

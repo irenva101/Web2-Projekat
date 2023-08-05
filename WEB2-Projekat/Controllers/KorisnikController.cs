@@ -19,12 +19,31 @@ namespace WEB2_Projekat.Controllers
             _korisnikService = korisnikService;
         }
 
+        [HttpGet("neverProdavce")]
+        public async Task<ICollection<Korisnik>> GetAllKorisnikeProdavceNeverifikovane()
+        {
+            var korisniciProdavci = await _korisnikService.GetAllKorisnikeProdavceNeverifikovane();
+            return korisniciProdavci;
+        }
+
+        [HttpPost("neverProdavca")]
+        public async Task<bool> OdbijVerProdavca(int idKorisnika)
+        {
+            return await _korisnikService.OdbijVerProdavca(idKorisnika);
+        }
+        [HttpPost("verProdavca")]
+        public async Task<bool> VerifikujProdavca(int idKorisnika)
+        {
+            return await _korisnikService.VerifikujProdavca(idKorisnika);
+        }
+
         [HttpPost]
         public async Task<Korisnik> Post( KorisnikRequestModel model)
         {
             var noviKorisnik = await _korisnikService.Create(model);
             return noviKorisnik;
         }
+
 
         [HttpGet("allKorisnike")]
         public async Task<ICollection<Korisnik>> Get() //get all users

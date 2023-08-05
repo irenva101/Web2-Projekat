@@ -43,10 +43,15 @@ namespace Business.Services
             return await _porudzbinaRepository.GetPorudzbina(idPorudzbinaId);
         }
 
-        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavca(int korisnikId)
+        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavcaStare(int korisnikId)
         {
-            return await _porudzbinaRepository.GetPorudzbineProdavca(korisnikId);
+            return await _porudzbinaRepository.GetPorudzbineProdavcaStare(korisnikId);
         }
+        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavcaNove(int korisnikId)
+        {
+            return await _porudzbinaRepository.GetPorudzbineProdavcaNove(korisnikId);
+        }
+
 
         public async Task<bool> Patch(int idPorudzbine, PorudzbinaRequestModel model)
         {

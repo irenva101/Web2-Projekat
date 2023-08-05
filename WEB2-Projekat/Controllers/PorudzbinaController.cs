@@ -50,10 +50,16 @@ namespace WEB2_Projekat.Controllers
             return await _porudzbinaService.Delete(idPorudzbine);
         }
 
-        [HttpGet("allPorudzbineProdavca")]
-        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavca(int korisnikId)//porudzbine sa artiklima od odredjenog prodavca
+        [HttpGet("allPorudzbineProdavcaStare")]
+        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavcaStare(int korisnikId)//porudzbine sa artiklima od odredjenog prodavca
         {
-            return await _porudzbinaService.GetPorudzbineProdavca(korisnikId);
+            return await _porudzbinaService.GetPorudzbineProdavcaStare(korisnikId);
         }
+        [HttpGet("allPorudzbineProdavcaNove")]
+        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavcaNove(int korisnikId)
+        {
+            return await _porudzbinaService.GetPorudzbineProdavcaNove(korisnikId);
+        }
+        
     }
 }

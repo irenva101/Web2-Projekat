@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using WEB2_Projekat.DBAccess;
 using WEB2_Projekat.Models;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.Repositories
 {
@@ -20,6 +21,56 @@ namespace Data.Repositories
         public KorisnikRepository(DBContext dBContext)
         {
             _dbContext = dBContext;
+        }
+
+        public async Task<bool> OdbijVerProdavca(int idKorisnika)
+        {
+            try
+            {
+                var prodavac = await _dbContext.Korisnici.Where(k => k.Id == idKorisnika).FirstOrDefaultAsync();
+                prodavac.TipKorisnika = TipKorisnika.Odbijen;
+                await _dbContext.SaveChangesAsync();
+                return true;
+
+            }catch (Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
+        }
+        public async Task<bool> VerifikujProdavca(int idKorisnika)
+        {
+            try
+            {
+                var prodavac = await _dbContext.Korisnici.Where(k => k.Id == idKorisnika).FirstOrDefaultAsync();
+                prodavac.Verifikovan = true;
+                await _dbContext.SaveChangesAsync();
+                return true;
+
+
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
+        }
+
+        public async Task<ICollection<Korisnik>> GetAllKorisnikeProdavceNeverifikovane()
+        {
+            var korisnici = _dbContext.Korisnici.OrderBy(k => k.Id).ToList();
+
+            var neverifikovaniProdavci=new List<Korisnik>();
+
+            foreach(var korisnik in korisnici)
+            {
+                if (korisnik.TipKorisnika == TipKorisnika.Prodavac && korisnik.Verifikovan==false)
+                {
+                    neverifikovaniProdavci.Add(korisnik);
+                }
+            }
+
+            await _dbContext.SaveChangesAsync();
+            return neverifikovaniProdavci;
         }
 
         public async Task<Korisnik> Create(KorisnikRequestModel model)
@@ -74,10 +125,10 @@ namespace Data.Repositories
 
         public async Task<bool> Logovanje(LogovanjeDTO dto)
         {
-            var emailDTO = dto.Email;
+            var usernameDTO = dto.Username;
             var lozinkaDTO = dto.Lozinka;
             var korisnik = _dbContext.Korisnici
-                .Where(korisnik => korisnik.Email == emailDTO).FirstOrDefault();
+                .Where(korisnik => korisnik.KorisnickoIme == usernameDTO).FirstOrDefault();
             if (korisnik != null)
             {
                 if(korisnik.Lozinka==lozinkaDTO) { return true; }
