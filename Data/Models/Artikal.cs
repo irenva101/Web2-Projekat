@@ -8,7 +8,6 @@ namespace WEB2_Projekat.Models
 {
     public class Artikal
     {
-        [Key]
         public int Id { get; set; }
 
         public int ProdavacID { get; set; }

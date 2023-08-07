@@ -2,6 +2,7 @@ using Business.Interfaces;
 using Business.Services;
 using Data.Interfaces;
 using Data.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,12 +13,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Shared.EmailServices;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using WEB2_Projekat.DBAccess;
+using WEB2_Projekat.EmailServices;
+using static Shared.Constants;
 
 namespace WEB2_Projekat
 {
@@ -33,6 +40,13 @@ namespace WEB2_Projekat
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Konfiguracija za EmailSettings iz appsettings.json
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+
+            // Registrovanje EmailService kao servisa
+            services.AddTransient<IEmailService, EmailService>();
+
+
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
@@ -45,6 +59,24 @@ namespace WEB2_Projekat
 
             services.AddDbContext<DBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Web2DB")));
+
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = "https://localhost:44388/",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY))
+                    };
+                });
 
             //services
             services.AddScoped<IArtikalService, ArtikalService>();
@@ -81,7 +113,7 @@ namespace WEB2_Projekat
             app.UseCors();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
