@@ -7,7 +7,6 @@ namespace WEB2_Projekat.Models
     
     public class Korisnik
     {
-        [Key]
         public int Id { get; set; }
         public string KorisnickoIme { get; set; }
         public string Email { get; set; }

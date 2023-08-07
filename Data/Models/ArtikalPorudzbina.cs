@@ -10,7 +10,6 @@ namespace Data.Models
 {
     public class ArtikalPorudzbina
     {
-        [Key]
         public int ArtikalPorudzbinaId { get; set; }
         public int ArtikliId { get; set; }
         public int PorudzbineId { get; set; }

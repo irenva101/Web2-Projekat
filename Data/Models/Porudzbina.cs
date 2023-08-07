@@ -9,8 +9,6 @@ namespace WEB2_Projekat.Models
 {
     public class Porudzbina
     {
-        [Key]
-        
         public int Id { get; set; }
 
         // ID korisnika

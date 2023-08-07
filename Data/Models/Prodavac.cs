@@ -5,7 +5,6 @@ namespace WEB2_Projekat.Models
 {
     public class Prodavac
     {
-        [Key]
         public int Id { get; set; }
         public int KorisnikId { get; set; }
         public virtual Korisnik Korisnik { get; set; }
