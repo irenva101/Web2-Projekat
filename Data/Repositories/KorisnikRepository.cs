@@ -127,11 +127,14 @@ namespace Data.Repositories
         {
             var usernameDTO = dto.Username;
             var lozinkaDTO = dto.Lozinka;
-            var korisnik = _dbContext.Korisnici
-                .Where(korisnik => korisnik.KorisnickoIme == usernameDTO).FirstOrDefault();
-            if (korisnik != null)
+
+            try
             {
-                if(korisnik.Lozinka==lozinkaDTO) { return true; }
+                var korisnik = _dbContext.Korisnici
+                    .Where(korisnik => korisnik.KorisnickoIme == usernameDTO).FirstOrDefault();
+            }catch(Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
             }
 
             await _dbContext.SaveChangesAsync();
