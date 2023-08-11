@@ -1,4 +1,5 @@
 ﻿using Business.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.ModelsDTO;
 using Shared.RequestModels;
@@ -20,10 +21,13 @@ namespace WEB2_Projekat.Controllers
         }
 
         [HttpGet("neverProdavce")]
-        public async Task<ICollection<Korisnik>> GetAllKorisnikeProdavceNeverifikovane()
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> GetAllKorisnikeProdavceNeverifikovane()
         {
             var korisniciProdavci = await _korisnikService.GetAllKorisnikeProdavceNeverifikovane();
-            return korisniciProdavci;
+            if (korisniciProdavci == null)
+                return BadRequest();
+            return Ok(korisniciProdavci);
         }
 
         [HttpPost("neverProdavca")]
@@ -59,10 +63,12 @@ namespace WEB2_Projekat.Controllers
             return await korisnik;
         }
 
+        [AllowAnonymous]
         [HttpPost("logovanje")]
-        public async Task<bool> Logovanje(LogovanjeDTO dto)
+        public async Task<IActionResult> Logovanje(LogovanjeDTO dto)
         {
-            return await _korisnikService.Logovanje(dto);
+            string token = await _korisnikService.Logovanje(dto);
+            return Ok(new {Token=token});
         }
 
         [HttpDelete]

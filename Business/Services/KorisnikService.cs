@@ -53,7 +53,7 @@ namespace Business.Services
             return await _korisnikRepository.GetKorisnik(idKorisnika);
         }
 
-        public async Task<bool> Logovanje(LogovanjeDTO dto)
+        public async Task<string> Logovanje(LogovanjeDTO dto)
         {
             return await _korisnikRepository.Logovanje(dto);
         }

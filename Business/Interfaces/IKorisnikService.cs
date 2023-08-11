@@ -17,7 +17,7 @@ namespace Business.Interfaces
         Task<Korisnik> Create(KorisnikRequestModel model);
         Task<bool> Delete(int idKorisnika);
         Task<bool> Patch(int idKorisnika,  KorisnikRequestModel model);
-        Task<bool> Logovanje(LogovanjeDTO dto);
+        Task<string> Logovanje(LogovanjeDTO dto);
         Task<ICollection<Korisnik>> GetAllKorisnikeProdavceNeverifikovane();
         Task<bool> OdbijVerProdavca(int idKorisnika);
         Task<bool> VerifikujProdavca(int idKorisnika);

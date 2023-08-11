@@ -12,6 +12,13 @@ using WEB2_Projekat.DBAccess;
 using WEB2_Projekat.Models;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.VisualBasic;
+using Shared;
 
 namespace Data.Repositories
 {
@@ -32,7 +39,9 @@ namespace Data.Repositories
                 await _dbContext.SaveChangesAsync();
                 return true;
 
-            }catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Console.WriteLine(ex.Message);
             }
             return false;
@@ -48,7 +57,7 @@ namespace Data.Repositories
 
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -59,11 +68,11 @@ namespace Data.Repositories
         {
             var korisnici = _dbContext.Korisnici.OrderBy(k => k.Id).ToList();
 
-            var neverifikovaniProdavci=new List<Korisnik>();
+            var neverifikovaniProdavci = new List<Korisnik>();
 
-            foreach(var korisnik in korisnici)
+            foreach (var korisnik in korisnici)
             {
-                if (korisnik.TipKorisnika == TipKorisnika.Prodavac && korisnik.Verifikovan==false)
+                if (korisnik.TipKorisnika == TipKorisnika.Prodavac && korisnik.Verifikovan == false)
                 {
                     neverifikovaniProdavci.Add(korisnik);
                 }
@@ -97,8 +106,8 @@ namespace Data.Repositories
 
         public async Task<bool> Delete(int idKorisnika)
         {
-            var korisnik=await _dbContext.Korisnici.FindAsync(idKorisnika); 
-            if(korisnik == null)
+            var korisnik = await _dbContext.Korisnici.FindAsync(idKorisnika);
+            if (korisnik == null)
             {
                 return false;
             }
@@ -117,53 +126,83 @@ namespace Data.Repositories
         public async Task<KorisnikRequestModel> GetKorisnik(int idKorisnika)
         {
             await _dbContext.SaveChangesAsync();
-            var k= _dbContext.Korisnici.SingleOrDefault(k => k.Id == idKorisnika);
+            var k = _dbContext.Korisnici.SingleOrDefault(k => k.Id == idKorisnika);
             KorisnikRequestModel KRM = new KorisnikRequestModel(k.KorisnickoIme, k.Email, k.Lozinka, k.Ime, k.Prezime, k.DatumRodjenja,
                 k.Adresa, k.TipKorisnika, k.SlikaKorisnika, k.Verifikovan, k.Postarina);
             return KRM;
         }
 
-        public async Task<bool> Logovanje(LogovanjeDTO dto)
+        public async Task<string> Logovanje(LogovanjeDTO dto)
         {
             var usernameDTO = dto.Username;
             var lozinkaDTO = dto.Lozinka;
+            string tokenString = "";
 
             try
             {
                 var korisnik = _dbContext.Korisnici
                     .Where(korisnik => korisnik.KorisnickoIme == usernameDTO).FirstOrDefault();
-            }catch(Exception ex)
+                //treba provera da li je uneo dohbru sifru
+
+                if (korisnik == null)
+                    throw new Exception($"User with {dto.Username} doesn't exist! Try again.");
+
+                var claims = new[]
+                {
+                    new Claim("Id", korisnik.Id.ToString()),
+                    new Claim("Email", korisnik.KorisnickoIme.ToString()),
+                    new Claim(ClaimTypes.Role, korisnik.TipKorisnika.ToString()),
+                    new Claim("Verifikovan", korisnik.Verifikovan.ToString())
+                };
+
+                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Shared.Constants.SECRET_KEY));
+                var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+                var tokeOptions = new JwtSecurityToken(
+                    issuer: "https://localhost:44388",
+                    claims: claims,
+                    expires:DateTime.Now.AddMinutes(60),
+                    signingCredentials: signinCredentials
+                );
+                tokenString=new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+
+                return tokenString;
+
+            }
+            catch (Exception ex)
             {
                 await Console.Out.WriteLineAsync(ex.Message);
+                return tokenString;
+                //hendluj ovu gresku ako nisu dobro kredencijali uneseni
             }
 
-            await _dbContext.SaveChangesAsync();
-            return false;
-            
+
+
         }
 
         public async Task<bool> Patch(int idKorisnika, KorisnikRequestModel model)
         {
             var korisnik = await _dbContext.Korisnici.FindAsync(idKorisnika);
-            if (korisnik==null)
+            if (korisnik == null)
             {
                 return false;
             }
-            korisnik.Ime=model.Ime;
-            korisnik.Prezime=model.Prezime;
-            korisnik.Lozinka=model.Lozinka;
+            korisnik.Ime = model.Ime;
+            korisnik.Prezime = model.Prezime;
+            korisnik.Lozinka = model.Lozinka;
             korisnik.SlikaKorisnika = model.SlikaKorisnika;
-            korisnik.Verifikovan=model.Verifikovan;
+            korisnik.Verifikovan = model.Verifikovan;
             korisnik.Adresa = model.Adresa;
-            korisnik.DatumRodjenja=model.DatumRodjenja;
-            korisnik.Email= model.Email; 
-            korisnik.Postarina=model.Postarina;
-            korisnik.KorisnickoIme=model.KorisnickoIme;
+            korisnik.DatumRodjenja = model.DatumRodjenja;
+            korisnik.Email = model.Email;
+            korisnik.Postarina = model.Postarina;
+            korisnik.KorisnickoIme = model.KorisnickoIme;
 
             await _dbContext.SaveChangesAsync();
             return true;
 
-            
+
         }
+
+        
     }
 }

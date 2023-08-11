@@ -73,7 +73,7 @@ namespace WEB2_Projekat
                         ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "https://localhost:44388/",
+                        ValidIssuer = "https://localhost:44388",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY))
                     };
                 });
