@@ -1,8 +1,11 @@
 ﻿using Business.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.RequestModels;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Net.NetworkInformation;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using WEB2_Projekat.Models;
@@ -30,14 +33,19 @@ namespace WEB2_Projekat.Controllers
             return await _porudzbinaService.GetPorudzbina(idPorudzbine);
         }
         [HttpPost]
-        public async Task<Porudzbina> Post(PorudzbinaRequestModel model)
+        [Authorize(Roles="Kupac")]
+        public async Task<IActionResult> Post(PorudzbinaRequestModel model)
         {
-            return await _porudzbinaService.Create(model);
+            var porudzbina=await _porudzbinaService.Create(model);
+            if (porudzbina == null) return BadRequest();
+            return Ok(porudzbina);
         }
         [HttpGet("allPorudzbineKorisnika")]
-        public async Task<ICollection<PorudzbinaRequestModel>> GetPorudzbinaKorisnika(int idKorisnika)
+        [Authorize(Roles ="Kupac")]
+        public async Task<IActionResult> GetPorudzbinaKorisnika(int idKorisnika)
         {
-            return await _porudzbinaService.GetAllPorudzbine(idKorisnika);
+           var porudzbine=await _porudzbinaService.GetAllPorudzbine(idKorisnika);
+            if(porudzbine ==null) return BadRequest(); return Ok(porudzbine);
         }
         [HttpPatch]
         public async Task<bool> Patch(int idPorudzbine, PorudzbinaRequestModel model)
@@ -49,11 +57,15 @@ namespace WEB2_Projekat.Controllers
         {
             return await _porudzbinaService.Delete(idPorudzbine);
         }
-
+        
         [HttpGet("allPorudzbineProdavcaStare")]
-        public async Task<ICollection<Porudzbina>> GetPorudzbineProdavcaStare(int korisnikId)//porudzbine sa artiklima od odredjenog prodavca
+        [Authorize(Roles ="Prodavac")]
+        public async Task<IActionResult> GetPorudzbineProdavcaStare(int korisnikId)//porudzbine sa artiklima od odredjenog prodavca
         {
-            return await _porudzbinaService.GetPorudzbineProdavcaStare(korisnikId);
+            var porudzbineProdavca=await _porudzbinaService.GetPorudzbineProdavcaStare(korisnikId);
+            if (porudzbineProdavca == null)
+                return BadRequest();
+            return Ok(porudzbineProdavca);
         }
         [HttpGet("allPorudzbineProdavcaNove")]
         public async Task<ICollection<Porudzbina>> GetPorudzbineProdavcaNove(int korisnikId)

@@ -31,17 +31,24 @@ namespace WEB2_Projekat.Controllers
         }
 
         [HttpPost("neverProdavca")]
-        public async Task<bool> OdbijVerProdavca(int idKorisnika)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> OdbijVerProdavca(int idKorisnika)
         {
-            return await _korisnikService.OdbijVerProdavca(idKorisnika);
+            var temp=await _korisnikService.OdbijVerProdavca(idKorisnika);
+            if(temp==false) return BadRequest();
+            return Ok(temp);
         }
         [HttpPost("verProdavca")]
-        public async Task<bool> VerifikujProdavca(int idKorisnika)
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> VerifikujProdavca(int idKorisnika)
         {
-            return await _korisnikService.VerifikujProdavca(idKorisnika);
+            var temp=await _korisnikService.VerifikujProdavca(idKorisnika);
+            if(temp==false) return BadRequest();
+            return Ok(temp);
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<Korisnik> Post( KorisnikRequestModel model)
         {
             var noviKorisnik = await _korisnikService.Create(model);
@@ -50,17 +57,21 @@ namespace WEB2_Projekat.Controllers
 
 
         [HttpGet("allKorisnike")]
-        public async Task<ICollection<Korisnik>> Get() //get all users
+        [Authorize(Roles ="Admin")]
+        public async Task<IActionResult> Get() //get all users
         {
-            var korisnici = _korisnikService.GetAllKorisnike();
-            return await korisnici;
+            var korisnici = await _korisnikService.GetAllKorisnike();
+            if (korisnici == null) BadRequest(); 
+            return Ok(korisnici);
         }
 
         [HttpGet]
-        public async Task<KorisnikRequestModel> Get(int idKorisnika)
+        [Authorize(Roles ="Admin, Kupac, Prodavac")]
+        public async Task<IActionResult> Get(int idKorisnika)
         {
-            var korisnik = _korisnikService.GetKorisnik(idKorisnika);
-            return await korisnik;
+            var korisnik = await _korisnikService.GetKorisnik(idKorisnika);
+            if(korisnik == null) return BadRequest();
+            return Ok(korisnik);
         }
 
         [AllowAnonymous]
@@ -77,9 +88,12 @@ namespace WEB2_Projekat.Controllers
             return await _korisnikService.Delete(idKorisnika);
         }
         [HttpPut]
-        public async Task<bool> Put(int idKorisnika, KorisnikRequestModel model)
+        [Authorize(Roles = "Kupac, Prodavac, Admin")]
+        public async Task<IActionResult> Put(int idKorisnika, KorisnikRequestModel model)
         {
-            return await _korisnikService.Patch(idKorisnika,model);
+            var temp= await _korisnikService.Patch(idKorisnika,model);
+            if (temp == false) return BadRequest();
+            return Ok(temp);
         }
 
     }

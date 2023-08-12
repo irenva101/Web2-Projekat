@@ -3,6 +3,7 @@ using Shared.EmailServices;
 using Shared.RequestModels;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WEB2_Projekat.Controllers
 {

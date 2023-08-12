@@ -1,9 +1,11 @@
 ﻿using Business.Interfaces;
 using Business.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.RequestModels;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using WEB2_Projekat.Models;
 
@@ -21,15 +23,19 @@ namespace WEB2_Projekat.Controllers
         }
 
         [HttpPost]
-        public async Task<Artikal> Post(ArtikalRequestModel model)
+        [Authorize(Roles = "Prodavac")]
+        public async Task<IActionResult> Post(ArtikalRequestModel model)
         {
-            return await _artikalService.Create(model);
+            var artikal= await _artikalService.Create(model);
+            if (artikal == null) return BadRequest();
+            return Ok(artikal);
         }
         [HttpGet]
-        public async Task<ICollection<Artikal>> Get()
+        [Authorize(Roles ="Kupac")]
+        public async Task<IActionResult> Get()
         {
-            var artikli = _artikalService.GetArtikals();
-            return await artikli;
+            var artikli = await _artikalService.GetArtikals();
+            if(artikli == null) return BadRequest(); return Ok(artikli);
         }
         [HttpGet("idProdavca")]
         public async Task<ICollection<Artikal>> Get(int idProdavca)
