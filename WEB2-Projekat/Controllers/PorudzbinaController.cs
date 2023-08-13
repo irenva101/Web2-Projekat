@@ -23,9 +23,12 @@ namespace WEB2_Projekat.Controllers
         }
 
         [HttpGet("allPorudzbine")]
-        public async Task<ICollection<Porudzbina>> Get()
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Get()
         {
-            return await _porudzbinaService.GetAllPorudzbine();
+            var porudzbine = await _porudzbinaService.GetAllPorudzbine();
+            if (porudzbine == null) return BadRequest();
+            return Ok(porudzbine);
         }
         [HttpGet]
         public async Task<Porudzbina> GetPorudzbina(int idPorudzbine)

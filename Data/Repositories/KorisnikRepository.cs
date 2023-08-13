@@ -19,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.VisualBasic;
 using Shared;
+using BCrypt.Net;
 
 namespace Data.Repositories
 {
@@ -87,7 +88,7 @@ namespace Data.Repositories
             Korisnik dbEntity = new Korisnik();
             dbEntity.KorisnickoIme = model.KorisnickoIme;
             dbEntity.Email = model.Email;
-            dbEntity.Lozinka = model.Lozinka;
+            dbEntity.Lozinka = BCrypt.Net.BCrypt.HashPassword(model.Lozinka);
             dbEntity.Ime = model.Ime;
             dbEntity.Prezime = model.Prezime;
             dbEntity.DatumRodjenja = model.DatumRodjenja;
@@ -137,6 +138,11 @@ namespace Data.Repositories
             var usernameDTO = dto.Username;
             var lozinkaDTO = dto.Lozinka;
             string tokenString = "";
+
+            var tempKorisnik = _dbContext.Korisnici
+                    .Where(korisnik => korisnik.KorisnickoIme == usernameDTO).FirstOrDefault();
+
+            bool passwordsMatch = BCrypt.Net.BCrypt.Verify(lozinkaDTO, tempKorisnik.Lozinka); 
 
             try
             {
