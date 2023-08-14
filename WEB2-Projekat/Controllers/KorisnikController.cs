@@ -1,5 +1,6 @@
 ﻿using Business.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.ModelsDTO;
 using Shared.RequestModels;
@@ -95,6 +96,13 @@ namespace WEB2_Projekat.Controllers
             if (temp == false) return BadRequest();
             return Ok(temp);
         }
-
+        [HttpGet("getKorisnikToken")]
+        
+        public async Task<IActionResult> GetKorisnikToken(string email, string ime)
+        {
+            var token=await _korisnikService.GetKorisnikToken(email, ime);
+            if (token == null) return BadRequest();
+            return Ok(new { Token = token });
+        }
     }
 }

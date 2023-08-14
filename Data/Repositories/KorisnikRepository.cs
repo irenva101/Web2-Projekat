@@ -209,6 +209,29 @@ namespace Data.Repositories
 
         }
 
-        
+        public async Task<string> GetKorisnikToken(string email, string ime)
+        {
+            string tokenString = "";
+            string i = ime.ToLower();
+            var tempKorisnik = await _dbContext.Korisnici
+                    .Where(korisnik => korisnik.Email == email && korisnik.Ime.ToLower() == i).FirstOrDefaultAsync();
+            var claims = new[]
+                {
+                    new Claim("Id", tempKorisnik.Id.ToString()),
+                    new Claim("Email", tempKorisnik.KorisnickoIme.ToString()),
+                    new Claim(ClaimTypes.Role, tempKorisnik.TipKorisnika.ToString()),
+                    new Claim("Verifikovan", tempKorisnik.Verifikovan.ToString())
+                };
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Shared.Constants.SECRET_KEY));
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            var tokeOptions = new JwtSecurityToken(
+                issuer: "https://localhost:44388",
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(60),
+                signingCredentials: signinCredentials
+            );
+            tokenString=new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+            return tokenString;
+        }
     }
 }

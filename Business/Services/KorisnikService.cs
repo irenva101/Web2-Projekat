@@ -62,5 +62,10 @@ namespace Business.Services
         {
             return await _korisnikRepository.Patch(idKorisnika, model);
         }
+
+        public async Task<string> GetKorisnikToken(string email, string ime)
+        {
+            return await _korisnikRepository.GetKorisnikToken(email,ime);
+        }
     }
 }

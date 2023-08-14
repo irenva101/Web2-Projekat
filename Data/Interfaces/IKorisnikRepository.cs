@@ -21,5 +21,6 @@ namespace Data.Interfaces
         Task<ICollection<Korisnik>> GetAllKorisnikeProdavceNeverifikovane();
         Task<bool> OdbijVerProdavca(int idKorisnika);
         Task<bool> VerifikujProdavca(int idKorisnika);
+        Task<string> GetKorisnikToken(string email, string ime);
     }
 }
