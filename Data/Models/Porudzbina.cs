@@ -29,6 +29,8 @@ namespace WEB2_Projekat.Models
         //referenca na artikalPorudzbina tabelu
         public virtual ICollection<ArtikalPorudzbina> ArtikalPorudzbina { get; set; }
 
+        public bool Otkazana { get;set; }
+
 
     }
 

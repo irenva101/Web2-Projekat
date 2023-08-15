@@ -30,8 +30,15 @@ namespace Data.Repositories
             porudzbina.VremeIsporuke = model.VremeIsporuke;
 
             // Add the new Porudzbina to the context
-            var result = await _dbContext.Porudzbine.AddAsync(porudzbina);
-            await _dbContext.SaveChangesAsync();
+            try
+            {
+                var result = await _dbContext.Porudzbine.AddAsync(porudzbina);
+                await _dbContext.SaveChangesAsync();
+
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
 
             ICollection<Artikal> artikliDB = _dbContext.Artikli.ToList();
             ICollection<ArtikalRequestModel> artikliFront = model.Artikli;
@@ -47,6 +54,7 @@ namespace Data.Repositories
                         ArtikliId = artikal.Id,
                         PorudzbineId = porudzbina.Id // Use the Id of the newly created Porudzbina
                     };
+                    final.Add(artikal);
                     try
                     {
                         _dbContext.Set<ArtikalPorudzbina>().Add(artikalPorudzbina);
@@ -59,11 +67,14 @@ namespace Data.Repositories
                 }
             }
 
+            foreach(var artikal in final)
+            {
+                porudzbina.Artikli.Add(artikal);
+            }
 
 
 
-
-            return result.Entity;
+            return porudzbina;
         }
 
         public async Task<bool> DeletePorudzbina(int idPorudzbine)
@@ -82,27 +93,49 @@ namespace Data.Repositories
 
         public async Task<ICollection<PorudzbinaRequestModel>> GetAllPorudzbine(int idKorisnika)
         {
-            await _dbContext.SaveChangesAsync();
-            //return (ICollection<PorudzbinaRequestModel>)_dbContext.Porudzbine.Where(p => p.KorisnikId== idKorisnika).ToList();
-            var porudzbine = _dbContext.Porudzbine
-                .Where(p => p.KorisnikId == idKorisnika)
-                .Select(p => new PorudzbinaRequestModel
+            var porudzbine = _dbContext.Porudzbine.Where(p => p.KorisnikId == idKorisnika).ToList();
+            var artPor =  _dbContext.ArtikliPorudzbina.ToList();
+            List<PorudzbinaRequestModel> prmList = null;
+
+            foreach(var p in porudzbine)
+            {
+                foreach(var ap in artPor)
                 {
-                    KorisnikId = p.KorisnikId,
-                    AdresaDostave = p.AdresaDostave,
-                    Komentar = p.Komentar,
-                    VremeIsporuke = p.VremeIsporuke,
-                    Artikli = p.Artikli.Select(a=> new ArtikalRequestModel
+                    if(p.Id==ap.PorudzbineId)
                     {
-                        ProdavacId = a.ProdavacID,
-                        Naziv = a.Naziv,
-                        Cena = a.Cena,
-                        Kolicina = a.Kolicina,
-                        Opis = a.Opis,
-                        Slika = a.SlikaArtikla
-                    }).ToList()
-                }).ToList();
-            return porudzbine;
+                        var artikal=await _dbContext.Artikli.Where(a=>a.Id==ap.ArtikliId).SingleOrDefaultAsync();
+                        p.Artikli.Add(artikal);
+                    }
+                }
+            }
+            //prepakovanje
+            foreach(var p in porudzbine)
+            {
+                PorudzbinaRequestModel prm= new PorudzbinaRequestModel();
+                prm.KorisnikId = p.KorisnikId;
+                prm.AdresaDostave= p.AdresaDostave;
+                prm.Komentar= p.Komentar;
+                foreach(var a in p.Artikli)
+                {
+                    ArtikalRequestModel arm= new ArtikalRequestModel();
+                    arm.Id= a.Id;
+                    arm.ProdavacId = a.ProdavacID;
+                    arm.Naziv= a.Naziv;
+                    arm.Cena= a.Cena;
+                    arm.Kolicina= a.Kolicina;
+                    arm.Opis=a.Opis;
+                    arm.Slika = a.SlikaArtikla;
+
+                    prm.Artikli.Add(arm);
+                }
+                prm.VremeIsporuke = p.VremeIsporuke;
+                prm.Otkazana = p.Otkazana;
+
+                prmList.Add(prm);
+
+            }
+            return prmList;
+           
         }
 
         public async Task<ICollection<Porudzbina>> GetAllPorudzbine()

@@ -45,7 +45,7 @@ namespace WEB2_Projekat.Controllers
         }
         [HttpGet("allPorudzbineKorisnika")]
         [Authorize(Roles ="Kupac")]
-        public async Task<IActionResult> GetPorudzbinaKorisnika(int idKorisnika)
+        public async Task<IActionResult> GetPorudzbineKorisnika(int idKorisnika)
         {
            var porudzbine=await _porudzbinaService.GetAllPorudzbine(idKorisnika);
             if(porudzbine ==null) return BadRequest(); return Ok(porudzbine);

@@ -8,6 +8,7 @@ namespace Shared.RequestModels
 {
     public class ArtikalRequestModel
     {
+        public int Id { get; set; }
         public int ProdavacId { get; set; }
         public string Naziv { get; set; }
         public double Cena { get; set; }

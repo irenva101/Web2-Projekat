@@ -8,6 +8,10 @@ namespace Shared.RequestModels
 {
     public class PorudzbinaRequestModel
     {
+        public PorudzbinaRequestModel()
+        {
+            Artikli = new List<ArtikalRequestModel>();
+        }
         public int KorisnikId { get; set; }
         public string AdresaDostave { get; set; }
         public string Komentar { get; set; }
@@ -15,6 +19,7 @@ namespace Shared.RequestModels
         public ICollection<ArtikalRequestModel> Artikli { get; set; }
 
         public DateTime VremeIsporuke { get; set; }
+        public bool Otkazana {get;set;}
 
 
     }
