@@ -15,6 +15,8 @@ namespace Business.Interfaces
         Task<ICollection<Artikal>> GetAllArtikalsOfProdavac(int  idProdavca);
         Task<bool> Delete(int idArtikla);
         Task<bool> Patch(int idArtikla, ArtikalRequestModel model);
-        
+        Task<bool> UpdateKolicinu(ICollection<ArtikalRequestModel> artikalRequestModels);
+
+
     }
 }

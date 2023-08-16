@@ -95,7 +95,7 @@ namespace Data.Repositories
         {
             var porudzbine = _dbContext.Porudzbine.Where(p => p.KorisnikId == idKorisnika).ToList();
             var artPor =  _dbContext.ArtikliPorudzbina.ToList();
-            List<PorudzbinaRequestModel> prmList = null;
+            List<PorudzbinaRequestModel> prmList = new List<PorudzbinaRequestModel>();
 
             foreach(var p in porudzbine)
             {

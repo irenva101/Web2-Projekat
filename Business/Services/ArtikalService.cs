@@ -41,6 +41,9 @@ namespace Business.Services
             return await _artikalRepository.Patch(idArtikla, model);
         }
 
-        
+        public async Task<bool> UpdateKolicinu(ICollection<ArtikalRequestModel> artikalRequestModels)
+        {
+            return await _artikalRepository.UpdateKolicinu(artikalRequestModels); 
+        }
     }
 }

@@ -53,6 +53,11 @@ namespace WEB2_Projekat.Controllers
         {
             return await _artikalService.Patch(idArtikla, model);
         }
+        [HttpPost("UpdateKolicinu")]
+        public async Task<bool> UpdateKolicinu(ICollection<ArtikalRequestModel> artikalRequestModels)
+        {
+            return await _artikalService.UpdateKolicinu(artikalRequestModels);
+        }
         
         
     }

@@ -1,4 +1,5 @@
 ﻿using Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Shared.RequestModels;
 using System;
 using System.Collections.Generic;
@@ -80,6 +81,37 @@ namespace Data.Repositories
             artikal.SlikaArtikla = model.Slika;
 
             await _dbContext.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> UpdateKolicinu(ICollection<ArtikalRequestModel> artikalRequestModels)
+        {
+            bool nasao = false;
+            var artikli = await _dbContext.Artikli.ToListAsync();
+            try
+            {
+                foreach(var artikal in artikli)
+                {
+                    foreach(var model in artikalRequestModels)
+                    {
+                        if (artikal.Id == model.Id)
+                        {
+                            nasao = true;
+                            artikal.Kolicina = artikal.Kolicina - 1;
+
+                            await _dbContext.SaveChangesAsync();
+                        }
+                    }
+                }
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+                
+            }
+            //ovde upada iako ne nadje
+            if(!nasao)
+            {
+                return false;//nije nasao ni jedan pogodak, nista nije promenio
+            }
             return true;
         }
     }
