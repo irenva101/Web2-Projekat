@@ -194,7 +194,7 @@ namespace Data.Repositories
             }
             korisnik.Ime = model.Ime;
             korisnik.Prezime = model.Prezime;
-            korisnik.Lozinka = model.Lozinka;
+            korisnik.Lozinka = BCrypt.Net.BCrypt.HashPassword(model.Lozinka);
             korisnik.SlikaKorisnika = model.SlikaKorisnika;
             korisnik.Verifikovan = model.Verifikovan;
             korisnik.Adresa = model.Adresa;

@@ -57,5 +57,10 @@ namespace Business.Services
         {
             return await _porudzbinaRepository.PatchPorudzbina(idPorudzbine, model);
         }
+
+        public async Task<bool> CancelPorudzbina(int idPorudzbine)
+        {
+            return await _porudzbinaRepository.CancelPorudzbina(idPorudzbine);
+        }
     }
 }

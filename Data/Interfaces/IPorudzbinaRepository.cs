@@ -20,6 +20,7 @@ namespace Data.Interfaces
         Task<bool> DeletePorudzbina(int idPorudzbine);
         Task<ICollection<Porudzbina>> GetPorudzbineProdavcaStare(int korisnikId);
         Task<ICollection<Porudzbina>> GetPorudzbineProdavcaNove(int korisnikId);
+        Task<bool> CancelPorudzbina(int idPorudzbine);
 
     }
 }

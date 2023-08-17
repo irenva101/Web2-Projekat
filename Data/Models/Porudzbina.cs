@@ -30,6 +30,7 @@ namespace WEB2_Projekat.Models
         public virtual ICollection<ArtikalPorudzbina> ArtikalPorudzbina { get; set; }
 
         public bool Otkazana { get;set; }
+        public DateTime VremePorucivanja { get; set; }
 
 
     }

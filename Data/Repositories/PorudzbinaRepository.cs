@@ -24,10 +24,12 @@ namespace Data.Repositories
         public async Task<Porudzbina> CreatePorudzbina(PorudzbinaRequestModel model)
         {
             Porudzbina porudzbina = new Porudzbina();
+            porudzbina.Id= model.Id;
             porudzbina.KorisnikId = model.KorisnikId;
             porudzbina.AdresaDostave=model.AdresaDostave;
             porudzbina.Komentar=model.Komentar;
             porudzbina.VremeIsporuke = model.VremeIsporuke;
+            porudzbina.VremePorucivanja = model.VremePorucivanja;
 
             // Add the new Porudzbina to the context
             try
@@ -112,6 +114,7 @@ namespace Data.Repositories
             foreach(var p in porudzbine)
             {
                 PorudzbinaRequestModel prm= new PorudzbinaRequestModel();
+                prm.Id = p.Id;
                 prm.KorisnikId = p.KorisnikId;
                 prm.AdresaDostave= p.AdresaDostave;
                 prm.Komentar= p.Komentar;
@@ -214,27 +217,6 @@ namespace Data.Repositories
                 }
             }
 
-            //var artikli = new List<Artikal>();
-            //var artikal= new Artikal();
-            //var temp = 0;
-            //var artikliZaSlanje=new List<Artikal>();
-
-
-            //foreach (var pzp in porudzbineZaPrikazati)
-            //{
-            //    foreach(var sap in sviArtikalPorudzbine)
-            //    {
-            //        if(pzp.Id==sap.PorudzbineId)
-            //        {
-            //            temp = sap.ArtikliId;
-            //            artikal=sviArtikli.SingleOrDefault(a=>a.Id== temp);
-            //            artikliZaSlanje.Add(artikal);
-            //            pzp.Artikli.Add(artikal);
-
-
-            //        }
-            //    }
-            //} 
             return porudzbineZaPrikazati;
         }
         public async Task<ICollection<Porudzbina>> GetPorudzbineProdavcaNove(int korisnikId)
@@ -297,9 +279,30 @@ namespace Data.Repositories
                     final.Add(pzp);
                 }
             }
-
-
             return final;
+        }
+
+        public async Task<bool> CancelPorudzbina(int idPorudzbine)
+        {
+            var porudzbine = await _dbContext.Porudzbine.ToListAsync();
+            foreach(var p in porudzbine)
+            {
+                if (p.Id == idPorudzbine)
+                {
+                    if (!p.Otkazana)
+                    {
+                        p.Otkazana = true;
+                        await _dbContext.SaveChangesAsync();
+                        return true;
+                    }
+                    else
+                    {
+                        throw new Exception("Ne mozete otkazati vec otkazanu porudzbinu");
+                        
+                    }
+                }
+            }
+            return false;
         }
     }
 }

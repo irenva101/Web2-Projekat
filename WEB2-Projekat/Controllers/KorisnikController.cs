@@ -104,5 +104,7 @@ namespace WEB2_Projekat.Controllers
             if (token == null) return BadRequest();
             return Ok(new { Token = token });
         }
+
+
     }
 }
