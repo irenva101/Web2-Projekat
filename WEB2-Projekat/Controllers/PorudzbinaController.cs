@@ -76,9 +76,9 @@ namespace WEB2_Projekat.Controllers
             return await _porudzbinaService.GetPorudzbineProdavcaNove(korisnikId);
         }
         [HttpPost("cancelPorudzbina")]
-        public async Task<bool> CancelPorudzbina(int idPorudzbine)
+        public async Task<bool> CancelPorudzbina(PorudzbinaRequestModel porudzbina)
         {
-            return await _porudzbinaService.CancelPorudzbina(idPorudzbine);
+            return await _porudzbinaService.CancelPorudzbina(porudzbina);
         }
         
     }

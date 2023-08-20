@@ -15,5 +15,6 @@ namespace Shared.RequestModels
         public int Kolicina { get; set; }
         public string Opis { get; set; }
         public string Slika { get; set; }
+       
     }
 }

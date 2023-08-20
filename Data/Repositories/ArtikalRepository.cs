@@ -87,6 +87,8 @@ namespace Data.Repositories
         {
             bool nasao = false;
             var artikli = await _dbContext.Artikli.ToListAsync();
+            
+
             try
             {
                 foreach(var artikal in artikli)

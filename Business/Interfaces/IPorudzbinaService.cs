@@ -20,6 +20,6 @@ namespace Business.Interfaces
         Task<bool> Delete(int idPorudzbine);
         Task<ICollection<Porudzbina>> GetPorudzbineProdavcaStare(int korisnikId);
         Task<ICollection<Porudzbina>> GetPorudzbineProdavcaNove(int korisnikId);
-        Task<bool> CancelPorudzbina(int idPorudzbine);
+        Task<bool> CancelPorudzbina(PorudzbinaRequestModel porudzbina);
     }
 }

@@ -23,13 +23,15 @@ namespace Data.Repositories
         }
         public async Task<Porudzbina> CreatePorudzbina(PorudzbinaRequestModel model)
         {
+            var interval = TimeSpan.FromHours(2);
+            
             Porudzbina porudzbina = new Porudzbina();
             porudzbina.Id= model.Id;
             porudzbina.KorisnikId = model.KorisnikId;
             porudzbina.AdresaDostave=model.AdresaDostave;
             porudzbina.Komentar=model.Komentar;
-            porudzbina.VremeIsporuke = model.VremeIsporuke;
-            porudzbina.VremePorucivanja = model.VremePorucivanja;
+            porudzbina.VremeIsporuke = model.VremeIsporuke.Add(interval);
+            porudzbina.VremePorucivanja = model.VremePorucivanja.Add(interval);
 
             // Add the new Porudzbina to the context
             try
@@ -282,18 +284,19 @@ namespace Data.Repositories
             return final;
         }
 
-        public async Task<bool> CancelPorudzbina(int idPorudzbine)
+        public async Task<bool> CancelPorudzbina(PorudzbinaRequestModel porudzbina)
         {
             var porudzbine = await _dbContext.Porudzbine.ToListAsync();
+            
             foreach(var p in porudzbine)
             {
-                if (p.Id == idPorudzbine)
+                if (p.Id == porudzbina.Id)
                 {
                     if (!p.Otkazana)
                     {
                         p.Otkazana = true;
                         await _dbContext.SaveChangesAsync();
-                        return true;
+                        
                     }
                     else
                     {
@@ -302,7 +305,26 @@ namespace Data.Repositories
                     }
                 }
             }
-            return false;
+
+            //ovde bih mogla da povecam kolicine
+            var artikliIzPorudzbine =porudzbina.Artikli; //treba proveriti da li ce iste artikle vise puta ovde prikazati
+            var artikli= await _dbContext.Artikli.ToListAsync();
+
+            foreach (var a in artikli)
+            {
+                foreach(var aip in artikliIzPorudzbine)
+                {
+                    if(a.Id== aip.Id)
+                    {
+                        a.Kolicina = a.Kolicina + 1;
+                        await _dbContext.SaveChangesAsync();
+                    }
+                }
+
+            }
+
+
+            return true;
         }
     }
 }

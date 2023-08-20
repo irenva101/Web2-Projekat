@@ -26,7 +26,7 @@ namespace WEB2_Projekat.Controllers
                 await _emailService.SendEmailAsync(erm.Receiver, erm.Subject, erm.Body);
                 // E-mail je uspešno poslat, možete nastaviti sa izvršavanjem ostatka koda.
 
-                return RedirectToAction("SuccessPage");
+                return Ok();
             }
             catch (Exception ex)
             {
