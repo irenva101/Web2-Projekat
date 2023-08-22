@@ -59,10 +59,27 @@ namespace Data.Repositories
             return _dbContext.Artikli.OrderBy(a=>a.Id).ToList();
         }
 
-        public async Task<ICollection<Artikal>> GetAllArtikalsOfProdavac(int idProdavca)
+        public async Task<ICollection<ArtikalRequestModel>> GetAllArtikalsOfProdavac(int idKorisnik)
         {
-            await _dbContext.SaveChangesAsync();
-            return (ICollection<Artikal>)_dbContext.Artikli.Where(a=> a.ProdavacID == idProdavca).ToList();
+            var prodavac = await _dbContext.Prodavci.Where(p => p.KorisnikId == idKorisnik).SingleOrDefaultAsync();
+            var artikli = await _dbContext.Artikli.Where(a => a.ProdavacID == prodavac.Id).ToListAsync();
+            var artikliFinal=new List<ArtikalRequestModel>();
+
+            foreach(var a in artikli)
+            {
+                ArtikalRequestModel ar=new ArtikalRequestModel();
+                ar.Id = a.Id;
+                ar.ProdavacId = prodavac.Id;
+                ar.Naziv=a.Naziv;
+                ar.Cena=a.Cena;
+                ar.Kolicina =a.Kolicina;
+                ar.Opis=a.Opis;
+                ar.Slika = a.SlikaArtikla;
+
+                artikliFinal.Add(ar);
+            }
+
+            return artikliFinal;
         }
 
         public async Task<bool> Patch(int idArtikla, ArtikalRequestModel model)

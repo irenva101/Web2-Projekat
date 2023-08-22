@@ -10,7 +10,7 @@ namespace Data.Interfaces
     {
         Task<Artikal> Create(ArtikalRequestModel model);
         Task<ICollection<Artikal>> GetAllArtikals();
-        Task<ICollection<Artikal>> GetAllArtikalsOfProdavac(int idProdavca);
+        Task<ICollection<ArtikalRequestModel>> GetAllArtikalsOfProdavac(int idProdavca);
         Task<bool> Delete(int idArtikla);
         Task<bool> Patch(int idArtikla, ArtikalRequestModel model);
         Task<bool> UpdateKolicinu(ICollection<ArtikalRequestModel> artikalRequestModels);

@@ -12,7 +12,7 @@ namespace Business.Interfaces
     {
         Task<Artikal> Create(ArtikalRequestModel model);
         Task<ICollection<Artikal>> GetArtikals();
-        Task<ICollection<Artikal>> GetAllArtikalsOfProdavac(int  idProdavca);
+        Task<ICollection<ArtikalRequestModel>> GetAllArtikalsOfProdavac(int  idKorisnika);
         Task<bool> Delete(int idArtikla);
         Task<bool> Patch(int idArtikla, ArtikalRequestModel model);
         Task<bool> UpdateKolicinu(ICollection<ArtikalRequestModel> artikalRequestModels);

@@ -26,7 +26,7 @@ namespace Business.Services
             return await _artikalRepository.Delete(idArtikla);
         }
 
-        public async Task<ICollection<Artikal>> GetAllArtikalsOfProdavac(int idProdavca)
+        public async Task<ICollection<ArtikalRequestModel>> GetAllArtikalsOfProdavac(int idProdavca)
         {
             return await _artikalRepository.GetAllArtikalsOfProdavac(idProdavca);
         }

@@ -37,11 +37,15 @@ namespace WEB2_Projekat.Controllers
             var artikli = await _artikalService.GetArtikals();
             if(artikli == null) return BadRequest(); return Ok(artikli);
         }
-        [HttpGet("idProdavca")]
-        public async Task<ICollection<Artikal>> Get(int idProdavca)
+        [HttpGet("idKorisnika")]
+        public async Task<IActionResult> Get(int idKorisnika)
         {
-            var artikli = _artikalService.GetAllArtikalsOfProdavac(idProdavca);
-            return await artikli;
+            var artikli = await _artikalService.GetAllArtikalsOfProdavac(idKorisnika);
+            if (artikli == null)
+            {
+                return BadRequest();
+            }
+            else return Ok(artikli);
         }
         [HttpDelete]
         public async Task<bool> Delete(int idArtikla)
