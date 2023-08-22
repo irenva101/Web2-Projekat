@@ -1,4 +1,5 @@
 ﻿using Business.Interfaces;
+using Google.Apis.Auth.OAuth2;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using Microsoft.AspNetCore.Mvc;
@@ -96,13 +97,14 @@ namespace WEB2_Projekat.Controllers
             if (temp == false) return BadRequest();
             return Ok(temp);
         }
+
         [HttpGet("getKorisnikToken")]
-        
-        public async Task<IActionResult> GetKorisnikToken(string email, string ime)
+        public async Task<IActionResult> GetKorisnikToken(string email, string ime, string prezime, string slikaKorisnika, string tipKorisnika)
         {
-            var token=await _korisnikService.GetKorisnikToken(email, ime);
-            if (token == null) return BadRequest();
-            return Ok(new { Token = token });
+            var token=await _korisnikService.GetKorisnikToken(email, ime,prezime,slikaKorisnika, tipKorisnika);
+            var responseObject = new { token };
+            return Ok(responseObject);
+
         }
 
 

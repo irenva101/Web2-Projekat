@@ -32,7 +32,7 @@ namespace WEB2_Projekat.Controllers
             {
                 // Došlo je do greške pri slanju e-maila.
                 // Ovde možete postupiti prema potrebi, na primer, vratiti korisnika na stranicu za unos e-maila.
-                
+                throw new Exception(ex.Message);
                 return RedirectToAction("ErrorPage");
             }
 

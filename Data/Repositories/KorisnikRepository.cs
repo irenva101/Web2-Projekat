@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.VisualBasic;
 using Shared;
 using BCrypt.Net;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
 
 namespace Data.Repositories
 {
@@ -209,10 +210,35 @@ namespace Data.Repositories
 
         }
 
-        public async Task<string> GetKorisnikToken(string email, string ime)
+        public async Task<string> GetKorisnikToken(string email, string ime, string prezime, string slikaKorisnika, string tipKorisnika)
         {
             string tokenString = "";
             string i = ime.ToLower();
+            var temp = await _dbContext.Korisnici
+                    .Where(korisnik => korisnik.Email == email && korisnik.Ime.ToLower() == i).FirstOrDefaultAsync();
+            if (temp == null)
+            {
+                Korisnik dbEntity=new Korisnik();
+                dbEntity.Email = email;
+                dbEntity.Ime = ime;
+                dbEntity.Prezime=prezime;
+                dbEntity.SlikaKorisnika = slikaKorisnika;
+                dbEntity.KorisnickoIme = ime;
+                dbEntity.Verifikovan = false;
+                dbEntity.Adresa = "";
+                if (tipKorisnika == "Kupac")
+                {
+                    dbEntity.TipKorisnika = TipKorisnika.Kupac;
+                    await _dbContext.Korisnici.AddAsync(dbEntity);
+                    await _dbContext.SaveChangesAsync();
+                }else if (tipKorisnika == "Prodavac")
+                {
+                    dbEntity.TipKorisnika = TipKorisnika.Prodavac;
+                    await _dbContext.Korisnici.AddAsync(dbEntity);
+                    await _dbContext.SaveChangesAsync();
+                }
+
+            }
             var tempKorisnik = await _dbContext.Korisnici
                     .Where(korisnik => korisnik.Email == email && korisnik.Ime.ToLower() == i).FirstOrDefaultAsync();
             var claims = new[]
