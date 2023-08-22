@@ -143,7 +143,7 @@ namespace Data.Repositories
             var tempKorisnik = _dbContext.Korisnici
                     .Where(korisnik => korisnik.KorisnickoIme == usernameDTO).FirstOrDefault();
 
-            bool passwordsMatch = BCrypt.Net.BCrypt.Verify(lozinkaDTO, tempKorisnik.Lozinka); 
+            
 
             try
             {
