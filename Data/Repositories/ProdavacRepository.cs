@@ -20,12 +20,28 @@ namespace Data.Repositories
         {
             _dBContext = dBContext;
         }
+        
 
-        public  Task<Prodavac> CreateProdavac(ProdavacRequestModel prodavacRequestModel)
+        public  async Task<ProdavacRequestModel> Post(ProdavacRequestModel prodavacRequestModel)
         {
+            var korisnik = await _dBContext.Korisnici.SingleOrDefaultAsync(k => k.Id == prodavacRequestModel.KorisnikId);
 
-            //prethodno mora postojati klijent i mora biti odobren od strane admina
-            return null;
+            Prodavac p = new Prodavac();
+            p.KorisnikId = korisnik.Id;
+            p.Postarina = korisnik.Postarina;
+            p.Verifikovan = korisnik.Verifikovan;
+
+             _dBContext.Prodavci.Add(p);
+            await _dBContext.SaveChangesAsync();
+
+            var prodavac = await _dBContext.Prodavci.SingleOrDefaultAsync(p=>p.KorisnikId == prodavacRequestModel.KorisnikId);
+
+            ProdavacRequestModel prm= new ProdavacRequestModel();
+            prm.Verifikovan = prodavac.Verifikovan;
+            prm.KorisnikId = prodavac.KorisnikId;
+            prm.Postarina = prodavac.Postarina;
+            
+            return prm;
         }
 
         public async Task<bool> DeleteProdavac(int idProdavca)

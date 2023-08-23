@@ -55,6 +55,15 @@ namespace Data.Repositories
                 var prodavac = await _dbContext.Korisnici.Where(k => k.Id == idKorisnika).FirstOrDefaultAsync();
                 prodavac.Verifikovan = true;
                 await _dbContext.SaveChangesAsync();
+
+                Prodavac p = new Prodavac();
+                p.KorisnikId = prodavac.Id;
+                p.Postarina = prodavac.Postarina;
+                p.Verifikovan = prodavac.Verifikovan;
+
+                _dbContext.Prodavci.Add(p);
+                await _dbContext.SaveChangesAsync();
+
                 return true;
 
 

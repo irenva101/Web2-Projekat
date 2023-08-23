@@ -1,6 +1,7 @@
 ﻿using Business.Interfaces;
 using Data.Interfaces;
 using Data.Repositories;
+using Microsoft.Extensions.Hosting;
 using Shared.RequestModels;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,9 @@ namespace Business.Services
             _prodavacRepository= prodavacRepository;
         }
 
-        public async Task<Prodavac> CreateProdavac(ProdavacRequestModel prodavacRequestModel)
+        public async Task<ProdavacRequestModel> Post(ProdavacRequestModel prodavacRequestModel)
         {
-            return await _prodavacRepository.CreateProdavac(prodavacRequestModel);
+            return await _prodavacRepository.Post(prodavacRequestModel);
         }
 
         public async Task<bool> DeleteProdavac(int idProdavca)

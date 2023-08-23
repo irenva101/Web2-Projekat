@@ -28,11 +28,13 @@ namespace WEB2_Projekat.Controllers
         {
             return await _prodavacService.GetProdavac(idProdavca);
         }
-        //[HttpPost]
-        //public async Task<Prodavac> Post(PorudzbinaRequestModel model)
-        //{
-        //    return await _prodavacService.Create(model);
-        //}
+        [HttpPost]
+
+        public async Task<ProdavacRequestModel> Post(ProdavacRequestModel model)
+        {
+            return await _prodavacService.Post(model);
+        }
+        
         [HttpGet("allArtikalsOfProdavac")]
         public async Task<ICollection<Prodavac>> GetAllArtikalsOfProdavac(int idProdavca)
         {

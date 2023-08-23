@@ -1,5 +1,6 @@
 ﻿using Data.Interfaces;
 using Data.Models;
+using Microsoft.AspNetCore.Mvc.Razor.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Shared.RequestModels;
 using System;
@@ -177,10 +178,16 @@ namespace Data.Repositories
         public async Task<ICollection<Porudzbina>> GetPorudzbineProdavcaStare(int korisnikId)
         {
             var artikliProdavca = new List<Artikal>();
+            var temp=new List<Porudzbina>();
 
             var korisnik= await _dbContext.Korisnici.SingleOrDefaultAsync(k=>k.Id==korisnikId);
             var prodavac = await _dbContext.Prodavci.SingleOrDefaultAsync(p => p.KorisnikId == korisnikId);
             var sviArtikli = await _dbContext.Artikli.ToListAsync();
+
+            if (prodavac == null)
+            {
+                return temp;
+            }
 
             foreach(var a in sviArtikli)
             {
@@ -224,10 +231,16 @@ namespace Data.Repositories
         public async Task<ICollection<Porudzbina>> GetPorudzbineProdavcaNove(int korisnikId)
         {
             var artikliProdavca = new List<Artikal>();
+            var temp=new List<Porudzbina>();
 
             var korisnik = await _dbContext.Korisnici.SingleOrDefaultAsync(k => k.Id == korisnikId);
             var prodavac = await _dbContext.Prodavci.SingleOrDefaultAsync(p => p.KorisnikId == korisnikId);
             var sviArtikli = await _dbContext.Artikli.ToListAsync();
+
+            if (prodavac == null)
+            {
+                return temp;
+            }
 
             foreach (var a in sviArtikli)
             {

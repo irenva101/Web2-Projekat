@@ -13,9 +13,10 @@ namespace Data.Interfaces
         Task<ICollection<Prodavac>> GetAllProdavce();
         Task<Prodavac> GetProdavac(int idProdavca);
         Task<ICollection<Artikal>> GetAllArtikalsOfProdavac(int idProdavca);
-        Task<Prodavac> CreateProdavac(ProdavacRequestModel prodavacRequestModel);
+        Task<ProdavacRequestModel> Post(ProdavacRequestModel prodavacRequestModel);
         Task<bool> DeleteProdavac(int idProdavca);
         Task<bool> PatchProdavca(int idProdavca, ProdavacRequestModel model);
+        
 
     }
 }
