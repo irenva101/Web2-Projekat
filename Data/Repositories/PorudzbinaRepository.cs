@@ -121,6 +121,8 @@ namespace Data.Repositories
                 prm.KorisnikId = p.KorisnikId;
                 prm.AdresaDostave= p.AdresaDostave;
                 prm.Komentar= p.Komentar;
+                prm.Isporucena =p.Isporucena;
+                
                 foreach(var a in p.Artikli)
                 {
                     ArtikalRequestModel arm= new ArtikalRequestModel();

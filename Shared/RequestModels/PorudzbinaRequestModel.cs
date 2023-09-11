@@ -23,6 +23,8 @@ namespace Shared.RequestModels
         public bool Otkazana {get;set;}
         public DateTime VremePorucivanja { get; set; }
 
+        public bool Isporucena { get; set; }
+
 
     }
 }
