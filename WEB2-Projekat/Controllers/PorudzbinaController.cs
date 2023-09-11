@@ -80,6 +80,13 @@ namespace WEB2_Projekat.Controllers
         {
             return await _porudzbinaService.CancelPorudzbina(porudzbina);
         }
-        
+        [HttpGet("IsporuciPorudzbinu")]
+        [Authorize(Roles ="Prodavac")]
+        public async Task<bool> IsporuciPorudzbinu(int porudzbinaId)
+        {
+            return await _porudzbinaService.IsporuciPorudzbinu(porudzbinaId);
+        }
+
+
     }
 }

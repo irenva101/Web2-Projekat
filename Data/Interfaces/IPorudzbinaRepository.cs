@@ -1,5 +1,6 @@
 ﻿using Shared.RequestModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,7 @@ namespace Data.Interfaces
         Task<ICollection<Porudzbina>> GetPorudzbineProdavcaStare(int korisnikId);
         Task<ICollection<Porudzbina>> GetPorudzbineProdavcaNove(int korisnikId);
         Task<bool> CancelPorudzbina(PorudzbinaRequestModel porudzbina);
+        Task<bool> IsporuciPorudzbinu(int porudzbinaId);
 
     }
 }

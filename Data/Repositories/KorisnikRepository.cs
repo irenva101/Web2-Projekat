@@ -61,7 +61,7 @@ namespace Data.Repositories
                 p.Postarina = prodavac.Postarina;
                 p.Verifikovan = prodavac.Verifikovan;
 
-                _dbContext.Prodavci.Add(p);
+                await _dbContext.Prodavci.AddAsync(p);
                 await _dbContext.SaveChangesAsync();
 
                 return true;

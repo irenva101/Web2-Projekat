@@ -62,5 +62,10 @@ namespace Business.Services
         {
             return await _porudzbinaRepository.CancelPorudzbina(porudzbina);
         }
+
+        public async Task<bool> IsporuciPorudzbinu(int porudzbinaId)
+        {
+            return await _porudzbinaRepository.IsporuciPorudzbinu(porudzbinaId);
+        }
     }
 }

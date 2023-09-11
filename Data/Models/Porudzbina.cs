@@ -32,6 +32,8 @@ namespace WEB2_Projekat.Models
         public bool Otkazana { get;set; }
         public DateTime VremePorucivanja { get; set; }
 
+        public bool Isporucena { get; set; }
+
 
     }
 

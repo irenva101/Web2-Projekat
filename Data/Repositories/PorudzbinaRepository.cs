@@ -339,5 +339,21 @@ namespace Data.Repositories
 
             return true;
         }
+
+        public async Task<bool> IsporuciPorudzbinu(int porudzbinaId)
+        {
+            var porudzbina= await _dbContext.Porudzbine.FirstOrDefaultAsync(p=> p.Id==porudzbinaId);
+            if (porudzbina == null)
+            {
+                return false;
+            }
+            else
+            {
+            porudzbina.Isporucena = true;
+            await _dbContext.SaveChangesAsync();
+            return true;
+
+            }
+        }
     }
 }

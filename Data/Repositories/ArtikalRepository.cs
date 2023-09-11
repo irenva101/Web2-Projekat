@@ -24,7 +24,14 @@ namespace Data.Repositories
 
         public async Task<Artikal> Create(ArtikalRequestModel model)
         {
+            //try
+            //{
+
             var prodavac = await _dbContext.Prodavci.SingleOrDefaultAsync(p => p.KorisnikId == model.ProdavacId);
+            //}catch(Exception ex)
+            //{
+            //    throw new Exception(ex.Message);
+            //}
 
 
             Artikal dbEntity = new Artikal();
