@@ -33,6 +33,9 @@ namespace Data.Repositories
             porudzbina.Komentar=model.Komentar;
             porudzbina.VremeIsporuke = model.VremeIsporuke.Add(interval);
             porudzbina.VremePorucivanja = model.VremePorucivanja.Add(interval);
+            porudzbina.IsPaid = model.IsPaid;
+            porudzbina.PayPal = model.PayPal;
+            porudzbina.OrderId = model.OrderId;
 
             // Add the new Porudzbina to the context
             try
@@ -122,6 +125,8 @@ namespace Data.Repositories
                 prm.AdresaDostave= p.AdresaDostave;
                 prm.Komentar= p.Komentar;
                 prm.Isporucena =p.Isporucena;
+                prm.IsPaid=p.IsPaid;
+                prm.PayPal=p.PayPal;
                 
                 foreach(var a in p.Artikli)
                 {

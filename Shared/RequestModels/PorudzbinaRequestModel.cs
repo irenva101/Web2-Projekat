@@ -24,6 +24,9 @@ namespace Shared.RequestModels
         public DateTime VremePorucivanja { get; set; }
 
         public bool Isporucena { get; set; }
+        public bool IsPaid { get; set; }
+        public bool PayPal { get; set; }
+        public string OrderId { get; set; }
 
 
     }

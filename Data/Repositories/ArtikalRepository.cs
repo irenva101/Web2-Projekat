@@ -43,7 +43,7 @@ namespace Data.Repositories
             dbEntity.Opis = model.Opis;
             dbEntity.SlikaArtikla = model.Slika;
 
-            var result = await _dbContext.Artikli.AddAsync(dbEntity);
+            var result=_dbContext.Artikli.Add(dbEntity);
 
             await _dbContext.SaveChangesAsync();
 
